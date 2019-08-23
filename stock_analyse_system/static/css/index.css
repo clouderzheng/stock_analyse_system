@@ -1,0 +1,38 @@
+.iframe {
+    width: 100%;
+    height: 100%;
+}
+.navbar-night{
+    width: 100%;
+    height: 20%;
+    background-color: #5bc0de;
+    position: relative;
+}
+.menu-night{
+    width: 10%;
+    height: 100%;
+    float: left;
+}
+.content-night{
+    width: 90%;
+    height: 100%;
+    float: left;
+}
+.navbar-font{
+    height: 100%;
+    font-family: cursive;
+    margin: 0px 0px;
+}
+
+.navbar-system-name-night{
+    width: 9%;
+    text-align: center;
+    margin-top: 16px;
+    float: left;
+}
+.navbar-icon-night{
+    float: left;
+    width: 9%;
+    height: 100%;
+    position: relative;
+}
