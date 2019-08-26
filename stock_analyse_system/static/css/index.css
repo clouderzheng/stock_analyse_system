@@ -31,8 +31,15 @@
     float: left;
 }
 .navbar-icon-night{
-    float: left;
+    float: right;
     width: 9%;
     height: 100%;
     position: relative;
+}
+.home-image-night{
+    height: 100%;
+    width: 25%;
+    margin: 1% 35%;
+    float: right;
+    border-radius: 100%;
 }
