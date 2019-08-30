@@ -10,18 +10,20 @@
     <script src="/static/js/bootstrap.min.js"></script>
 </head>
 <body class="login-body">
-<div  class="login-frame-night">
+<div class="login-frame-night">
 
     <div>
         <div class="login-div"><label class="login-label" for="account">account</label></div>
-        <div class="login-div"><input class="login-input"  id = "account" type="text"></div>
+        <div class="login-div"><input class="login-input" id="account" type="text"></div>
     </div>
     <div>
-        <div class="login-div"><label   class="login-label" for="password">password</label></div>
-        <div class="login-div"> <input  class="login-input" id = "password" type="password"></div>
+        <div class="login-div"><label class="login-label" for="password">password</label></div>
+        <div class="login-div"><input class="login-input" id="password" type="password"></div>
     </div>
     <div>
-        <div class="login-div"><button type="button" class="btn btn-default">登陆</button></div>
+        <div class="login-div">
+            <button type="button" class="btn btn-default" onclick="login()">登陆</button>
+        </div>
     </div>
 </div>
 
@@ -31,14 +33,24 @@
         var account = $("#account").val();
         var password = $("#password").val();
         $.ajax({
-            url: "",
-            type : "post",
-            data : { "account" : account , "password" : password},
-            success : function (res) {
-                
+            url: "/auth/verify",
+            type: "post",
+            data: {"account": account, "password": password},
+            success: function (res) {
+                if (res.code == "9999") {
+                    alert(res.msg)
+                }else{
+                    {#var f = document.createElement('form');#}
+                    {#f.action = '/auth/home';#}
+                    {#f.method = 'post';#}
+                    {#f.innerHTML = '<input id="token" name="token" value="' + res.token + '"/>';#}
+                    {#document.body.appendChild(f);#}
+                    {#f.submit();#}
+                    window.location.href = "/auth/home?token="+res.token
+                }
             },
-            error : function () {
-
+            error: function () {
+                alert("请联系管理人员")
             }
         })
     }
