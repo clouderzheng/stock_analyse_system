@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index info</title>
+    <link rel="stylesheet" href="/static/css/index-info.css">
+    <script src="/static/js/night_echart.js"></script>
+    <script src="/static/js/echarts.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+
+
+
+</head>
+<body>
+
+<div>
+    <div class="index-info-night">
+        <label class="index-label-night">上证50指数</label>
+         <div   id="sse_index" ></div>
+    </div>
+    <div class="index-info-night">
+        <label class="index-label-night">纳斯达克指数</label>
+        <div  id="international_index" > </div>
+    </div>
+</div>
+
+<script>
+
+
+ $(document).ready(function() {
+
+     var token = sessionStorage.getItem("token");
+
+     if(token == undefined){
+         window.location.href = "/auth/login"
+     }
+
+     $.ajax({
+         url : "/home/index",
+         type : "POST",
+         dataType: "json",
+         async : false,
+         data : {"token" :token },
+         success : function (res){
+            if(res.code == "0000"){
+               echart_k(res.times_NASDAQ,res.code_name_NASDAQ,res.view_data_NASDAQ,"international_index");
+               echart_k(res.times_SSE,res.code_name_SSE,res.view_data_SSE,"sse_index");
+            }else{
+                alert(res.msg)
+            }
+         },
+         error : function (res){
+            alert("获取指数失败")
+         }
+     })
+
+    });
+</script>
+</body>
+</html>

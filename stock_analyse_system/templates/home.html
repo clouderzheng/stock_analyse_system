@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="10">
+<!--    <meta http-equiv="refresh" content="10">-->
     <link rel="shortcut icon" href="/static/image/favicon-night.ico"/>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/index.css">
@@ -19,50 +19,67 @@
         <div class="navbar-system-name-night">
             股票分析系统
         </div>
-         <div class="navbar-icon-night">
+        <div class="navbar-icon-night">
             <img class="home-image-night" src="/static/image/night.jpg">
         </div>
     </div>
     <div class="menu-night">
 
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <div class="panel-group" id="panel-680598">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <label class="panel-title" data-toggle="collapse" data-parent="#panel-680598">HOME</label>
-                            </div>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="panel-group" id="panel-680598">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <label class="panel-title" data-toggle="collapse" data-parent="#panel-680598">HOME</label>
+                        </div>
 
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
+                               href="#average_strategy">stock strategy</a>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
-                                   href="#average_strategy">stock strategy</a>
-                            </div>
-                            <div id="average_strategy" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    average strategy
-                                </div>
+                        <div id="average_strategy" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                average strategy
                             </div>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
-                                   href="#message_analyse">stock analyse</a>
-                            </div>
-                            <div id="message_analyse" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    message analyse
-                                </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
+                               href="#message_analyse">stock analyse</a>
+                        </div>
+                        <div id="message_analyse" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                message analyse
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
     </div>
-    <div class="content-night">内容</div>
+    <div class="content-night">
+
+        <iframe class="content-frame-night" id="content"></iframe>
+
+    </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+
+
+     var token = sessionStorage.getItem("token");
+
+     if(token == undefined){
+         window.location.href = "/auth/login"
+     }
+        var url = "/auth/index_info?token="+token;
+        $("#content").attr("src",url);
+    })
+</script>
 </body>
 </html>

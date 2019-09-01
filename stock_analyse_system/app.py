@@ -1,13 +1,19 @@
-from flask import Flask,request,redirect,session
-from system import auth
+from flask import Flask,request,redirect,session,render_template
+from system import auth,home_index
+
 from flask_script import Manager
 
 
 app = Flask(__name__)
 app.register_blueprint(auth.blueprint)
+app.register_blueprint(home_index.blueprint)
+
 app.jinja_env.auto_reload = True
 app.run(debug=True)
-app.secret_key = "night"
+app.secret_key = "123"
+app.config['SESSION_TYPE'] = 'filesystem'
+# app.config['SECRET_KEY'] = '123'
+
 manager = Manager(app)
 if __name__ == '__main__':
     manager.run()
@@ -20,9 +26,12 @@ def filter_request():
         token = request.args.get("token")
         if (token == None):
             token = request.form.get("token")
-            if(token == None):
-                return redirect("/auth/login")
+            if((token == None)  | (len(token) == 0)):
+                # return redirect("/auth/login")
+                return render_template("login.html")
             else:
                 cache_toekn = session[token]
                 if (cache_toekn == None):
                     return redirect("/auth/login")
+
+

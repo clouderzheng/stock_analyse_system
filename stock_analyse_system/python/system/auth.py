@@ -1,6 +1,5 @@
 from flask import render_template,Blueprint,request,session
 from user_service import user_service
-import json
 import uuid
 blueprint = Blueprint('system', __name__, url_prefix='/auth')
 
@@ -12,6 +11,10 @@ def login_page():
 @blueprint.route('/home', methods=['POST',"GET"])
 def home_page():
     return render_template('home.html')
+
+@blueprint.route('/index_info', methods=['POST',"GET"])
+def index_info():
+    return render_template('index_info.html')
 
 
 @blueprint.route('/verify', methods=['POST'])
