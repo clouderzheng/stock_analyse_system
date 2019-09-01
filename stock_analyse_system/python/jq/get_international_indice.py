@@ -1,6 +1,7 @@
 import jqdatasdk as jq
 from jqdatasdk import finance
 import login
+import datetime
 """获取国际化指标"""
 class InternationalIndice(object):
 
@@ -20,7 +21,7 @@ class InternationalIndice(object):
 
     """获取上证50信息"""
     def get_SSE_50_Index(self,count = 100):
-        return jq.get_price('000001.XSHG', count= count, end_date='2019-08-21',fq='pre',)
+        return jq.get_price('000001.XSHG', count= count, end_date=datetime.date.today(),fq='pre',)
 
     """获取指定某一只股票信息"""
     def get_Stock_Price(self, code , end_date, count = 10 ,start_date=None,):
