@@ -1,4 +1,4 @@
-function echart_k(times,codeName,data,indexName) {
+function echart_k(times,codeName,data,indexName,volume,yaxis) {
     var option = {
     title : {
         text: codeName
@@ -9,11 +9,12 @@ function echart_k(times,codeName,data,indexName) {
             var res = params[0].seriesName + ' ' + params[0].name;
             res += '<br/>  开盘 : ' + params[0].value[0] + '  最高 : ' + params[0].value[3];
             res += '<br/>  收盘 : ' + params[0].value[1] + '  最低 : ' + params[0].value[2];
+            res += '<br/>  成交量 : ' + params[1].value ;
             return res;
         }
     },
     legend: {
-        data:[codeName]
+        data:["指数","成交量"]
     },
 
     dataZoom : {
@@ -35,7 +36,14 @@ function echart_k(times,codeName,data,indexName) {
         {
             type : 'value',
             scale:true,
+            name : "指数",
             boundaryGap: [0.01, 0.01]
+        },
+        {
+            type : 'value',
+            name : "交易量",
+            scale:true,
+            max : yaxis
         }
     ],
     series : [
@@ -43,6 +51,28 @@ function echart_k(times,codeName,data,indexName) {
             name:codeName,
             type:'k',
             data:data// 开盘，收盘，最低，最高
+        },
+        {
+            name:codeName,
+            type:'bar',
+            yAxisIndex: 1,
+            data:volume,// 成交量
+            itemStyle:{
+                     normal:{
+                       color:function (params) {
+                           var index = params.dataIndex;
+                           if(index == 0){
+                                return "red";
+                           }
+                           var today_volume = params.series.data[index];
+                           var lastday_volume = params.series.data[index - 1];
+                           if(today_volume > lastday_volume){
+                               return  "red";
+                           }else{
+                               return  "green";
+                           }
+                       },
+                       }},
         }
     ]
 };

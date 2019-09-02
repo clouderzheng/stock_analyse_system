@@ -1,7 +1,12 @@
 .index-info-night{
-    width: 50%;
-    height: 600px;
+    width: 33%;
+    height: 400px;
     float: left;
     text-align: center;
     color: rgb(229, 26, 126);
+}
+.index-format-night{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    height: 450px;
 }

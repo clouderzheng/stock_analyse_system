@@ -13,14 +13,32 @@
 </head>
 <body>
 
-<div>
+<div class="index-format-night">
     <div class="index-info-night">
-        <label class="index-label-night">上证50指数</label>
+        <label >上证50指数</label>
          <div   id="sse_index" ></div>
     </div>
     <div class="index-info-night">
-        <label class="index-label-night">纳斯达克指数</label>
-        <div  id="international_index" > </div>
+        <label >深证成指</label>
+        <div  id="szcz_index" > </div>
+    </div>
+    <div class="index-info-night">
+        <label >创业板指</label>
+        <div  id="cybz_index" > </div>
+    </div>
+</div>
+<div  class="index-format-night">
+    <div class="index-info-night">
+        <label >纳斯达克指数</label>
+         <div   id="ixic_index" ></div>
+    </div>
+    <div class="index-info-night">
+        <label >道琼斯指数</label>
+        <div  id="dji_index" > </div>
+    </div>
+    <div class="index-info-night">
+        <label >标普500指数</label>
+        <div  id="inx_index" > </div>
     </div>
 </div>
 
@@ -43,8 +61,22 @@
          data : {"token" :token },
          success : function (res){
             if(res.code == "0000"){
-               echart_k(res.times_NASDAQ,res.code_name_NASDAQ,res.view_data_NASDAQ,"international_index");
-               echart_k(res.times_SSE,res.code_name_SSE,res.view_data_SSE,"sse_index");
+
+                //获取国际指数 特指美股
+                //纳斯达克
+               echart_k(res.times_IXIC,res.code_name_IXIC,res.view_data_IXIC,"ixic_index",res.volume_IXIC,res.volume_yaxis_IXIC);
+               //道指
+               echart_k(res.times_DJI,res.code_name_DJI,res.view_data_DJI,"dji_index",res.volume_DJI,res.volume_yaxis_DJI);
+               //标普
+               echart_k(res.times_INX,res.code_name_INX,res.view_data_INX,"inx_index",res.volume_INX,res.volume_yaxis_INX);
+
+               //获取国内指数
+                //上证
+               echart_k(res.times_SSE,res.code_name_SSE,res.view_data_SSE,"sse_index",res.volume_SSE,res.volume_yaxis_SSE);
+               //深指
+               echart_k(res.times_SZCZ,res.code_name_SZCZ,res.view_data_SZCZ,"szcz_index",res.volume_SZCZ,res.volume_yaxis_SZCZ);
+               //创业
+               echart_k(res.times_CYBZ,res.code_name_CYBZ,res.view_data_CYBZ,"cybz_index",res.volume_CYBZ,res.volume_yaxis_CYBZ);
             }else{
                 alert(res.msg)
             }

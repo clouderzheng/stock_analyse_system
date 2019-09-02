@@ -1,8 +1,8 @@
 DBHOST = "localhost"
 DBPORT = 3306
 DBUSER = "root"
-DBPWD = "123456789"
-# DBPWD = "111"
+# DBPWD = "123456789"
+DBPWD = "111"
 DBNAME = "test"
 DBCHAR = "utf8mb4"
 
