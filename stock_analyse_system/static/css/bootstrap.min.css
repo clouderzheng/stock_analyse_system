@@ -270,7 +270,7 @@ td, th {
 @font-face {
     font-family: 'Glyphicons Halflings';
     src: url(../fonts/glyphicons-halflings-regular.eot);
-    src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'), url(../fonts/glyphicons-halflings-regular.woff) format('woff'), url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+    src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'), url(../fonts/glyphicons-halflings-regular.woff2) format('woff'), url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
 }
 
 .glyphicon {
@@ -5884,7 +5884,10 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus, a.list-g
     margin-top: 0;
     margin-bottom: 0;
     font-size: 16px;
-    color: inherit
+    color:  #1a1fe6;
+    font-family: monospace;
+    text-align: center;
+    font-size: 21px;
 }
 
 .panel-title > .small, .panel-title > .small > a, .panel-title > a, .panel-title > small, .panel-title > small > a {
@@ -6029,7 +6032,10 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus, a.list-g
 }
 
 .panel-group .panel-heading + .panel-collapse > .list-group, .panel-group .panel-heading + .panel-collapse > .panel-body {
-    border-top: 1px solid #ddd
+    border-top: 1px solid #ddd;
+    color: #0eb1e4;
+    font-family: monospace;
+    text-align: center;
 }
 
 .panel-group .panel-footer {

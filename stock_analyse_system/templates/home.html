@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/css/index.css">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/night_menu.js"></script>
     <title>login page</title>
 
 
@@ -37,11 +38,14 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
-                               href="#average_strategy">stock strategy</a>
+                               href="#strategy">stock strategy</a>
                         </div>
-                        <div id="average_strategy" class="panel-collapse collapse">
-                            <div class="panel-body">
+                        <div id="strategy" class="panel-collapse collapse">
+                            <div class="panel-body" id="average_strategy" onclick="change_content('trend_strategy')">
                                 average strategy
+                            </div>
+                            <div class="panel-body" id="trend_strategy"  onclick="change_content('trend_strategy')">
+                                trend strategy
                             </div>
                         </div>
                     </div>
@@ -53,6 +57,17 @@
                         <div id="message_analyse" class="panel-collapse collapse">
                             <div class="panel-body">
                                 message analyse
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
+                               href="#screen_stock">screen stock</a>
+                        </div>
+                        <div id="screen_stock" class="panel-collapse collapse">
+                            <div class="panel-body" onclick="change_content('snowball_combination_page')">
+                                <a >Snowball Combination </a>
                             </div>
                         </div>
                     </div>

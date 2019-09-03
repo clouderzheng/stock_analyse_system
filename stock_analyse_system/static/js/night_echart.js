@@ -79,4 +79,15 @@ function echart_k(times,codeName,data,indexName,volume,yaxis) {
 $("#"+indexName).css({"width":$(".index-info-night").width(),"height":$(".index-info-night").height()})
 var myChart = echarts.init(document.getElementById(indexName));
 myChart.setOption(option);
+};
+
+function check_token() {
+    var token = sessionStorage.getItem("token");
+    if(token == undefined){
+         window.location.href = "/auth/login";
+         return ;
+    }
+    return token;
 }
+
+

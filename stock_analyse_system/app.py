@@ -1,5 +1,5 @@
 from flask import Flask,request,redirect,session,render_template
-from system import auth,home_index
+from system import auth,home_index,snow_ball
 
 from flask_script import Manager
 
@@ -7,6 +7,7 @@ from flask_script import Manager
 app = Flask(__name__)
 app.register_blueprint(auth.blueprint)
 app.register_blueprint(home_index.blueprint)
+app.register_blueprint(snow_ball.blueprint)
 
 app.jinja_env.auto_reload = True
 app.run(debug=True)

@@ -16,6 +16,11 @@ def home_page():
 def index_info():
     return render_template('index_info.html')
 
+@blueprint.route('/change_content', methods=["GET"])
+def change_content():
+    pageName = request.args.get("pageName")
+    return render_template(pageName+'.html')
+
 
 @blueprint.route('/verify', methods=['POST'])
 def login_verify():

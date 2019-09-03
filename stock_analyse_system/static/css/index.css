@@ -34,6 +34,9 @@
     text-align: center;
     margin-top: 16px;
     float: left;
+    font-size: 20px;
+    font-family: cursive;
+    color: aliceblue;
 }
 .navbar-icon-night{
     float: right;
@@ -47,4 +50,17 @@
     margin: 1% 35%;
     float: right;
     border-radius: 100%;
+}
+
+.title-format-night{
+    color: #2105fd;
+    font-family: cursive;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 1%;
+}
+.content-format-night{
+    font-family: cursive;
+    color: #1c0e88;
+    font-size: 24px;
 }

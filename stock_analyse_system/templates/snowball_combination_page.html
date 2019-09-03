@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>snowball combination</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/snowball.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/static/css/themify-icons.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/js/night_echart.js"></script>
+    <script src="/static/js/snowball.js"></script>
+
+</head>
+<body>
+<div>
+    <div>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header title-format-night">
+                    雪球组合
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="content-format-night">
+        <label>雪球组合是采用爬虫技术,爬取雪球网站上投资者的组合仓位,可以指定建仓时间,借用大多数投资者的仓位组合，选出优质股票，省却每只股票的翻阅查询时间</label>
+    </div>
+    <div>
+        <hr>
+    </div>
+
+    <div>
+
+        <div class='col-sm-2 time-frame-night'>
+            <div class="form-group time-night ">
+                <div class='input-group date datetimePicker' id='datetimepicker2'>
+                    <span class="input-group-addon">开始时间</span>
+                    <input id="begin_time" type='text' class="form-control"/>
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                </div>
+            </div>
+            <div class="form-group time-night">
+                <div class='input-group date datetimePicker' id='datetimepicker2'>
+                    <span class="input-group-addon">结束时间</span>
+                    <input id="end_time" type='text' class="form-control"/>
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                </div>
+            </div>
+            <div class="form-group time-night">
+                <div class="input-group">
+                    <span class="input-group-addon">爬取条数</span>
+                    <input  type="text" value="100"/>
+                </div>
+            </div>
+            <div class="form-group time-night">
+               <button class="glyphicon glyphicon-search query-night" onclick="query_stock_position()" >查询</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -39,7 +39,7 @@ def deal_with_data(result,data , suff,sort_column):
     volumes = np.array(data['volume']).tolist()
     result["volume_" + suff] = volumes
     result["volume_yaxis_" + suff] =  math.ceil(max(volumes) * 3)
-import pandas as pd
+# import pandas as pd
 # internationalIndice = InternationalIndice()
 # data = internationalIndice.get_SSE_50_Index(100)
 # # print(type(data.index[0]))
