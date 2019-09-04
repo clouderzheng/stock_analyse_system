@@ -9,12 +9,13 @@ $(function () {
 function query_stock_position() {
     var begin_time = $("#begin_time").val();
     var end_time = $("#end_time").val();
+    var count = $("#count").val();
     var token = check_token();
 
     $.ajax({
          url: "/snowball/get_position_combination",
             type: "post",
-            data: {"begin_time": begin_time, "end_time": end_time,"token":token},
+            data: {"begin_time": begin_time, "end_time": end_time,"token":token,"count":count},
             success: function (res) {
                 alert(res)
             },
