@@ -30,7 +30,7 @@
             <div class="col-md-12 column">
                 <div class="panel-group" id="panel-680598">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" onclick="refresh()">
                             <label class="panel-title" data-toggle="collapse" data-parent="#panel-680598">HOME</label>
                         </div>
 
@@ -71,6 +71,18 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
+                               href="#stock_comment">stock comment</a>
+                        </div>
+                        <div id="stock_comment" class="panel-collapse collapse">
+                            <div class="panel-body" onclick="change_content('sina_market_comment')">
+                                <a >sina market comment </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,6 +107,10 @@
         var url = "/auth/index_info?token="+token;
         $("#content").attr("src",url);
     })
+
+    function refresh() {
+        window.location.reload();
+    }
 </script>
 </body>
 </html>

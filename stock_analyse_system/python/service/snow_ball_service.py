@@ -48,6 +48,6 @@ def get_stock_position_combination(begin_time,end_time,page = 1,total = 1):
     return result
 
 
-combination = get_stock_position_combination("2019-09-05 00:15:23", "2019-09-06 14:15:23", total=60)
-for key in combination:
-    print(key,":",combination[key].stock_name,combination[key].stock_code,combination[key].stock_count,)
+# combination = get_stock_position_combination("2019-09-05 00:15:23", "2019-09-06 14:15:23", total=60)
+# for key in combination:
+#     print(key,":",combination[key].stock_name,combination[key].stock_code,combination[key].stock_count,)

@@ -36,4 +36,6 @@ def filter_request():
                 if (cache_toekn == None):
                     return redirect("/auth/login")
 
-
+"""获取项目路径"""
+def get_path():
+    return app.root_path
