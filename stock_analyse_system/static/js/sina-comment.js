@@ -16,4 +16,25 @@ function query_comment() {
         }
     })
 
+};
+
+function add_shield_word() {
+    var field_word = $("#field_word").val();
+    if(field_word == undefined || field_word == ""){
+        alert("请先输入屏蔽词汇")
+    }
+     var token = check_token();
+     $.ajax({
+        url : "/sina/add_shield_word",
+        type : "post",
+        data : {"field_word":field_word,"token":token},
+        success : function (res) {
+            if(res.code == "0000"){
+                alert("添加成功")
+            }
+        },
+        error : function () {
+            alert("添加失败，请联系管理员")
+        }
+    })
 }

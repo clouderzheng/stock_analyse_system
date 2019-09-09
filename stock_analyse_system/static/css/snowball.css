@@ -16,3 +16,11 @@
     height: 35px;
     border-radius: 11%;
 }
+.sina_picture_night{
+    width: 20%;
+    float: left;
+    text-align: center;
+    font-size: 24px;
+    color: #ec4f0f;
+    font-family: cursive;
+}

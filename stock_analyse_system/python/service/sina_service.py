@@ -7,10 +7,16 @@ import re
 import time
 import traceback
 import app
+import platform
+import sina_comment_picture
+
 """爬取指定时间的大盘评论"""
 def get_comment(begin_day ,end_day ):
 
     path = app.get_path()
+    system_name = platform.system()
+    if("Windows" ==  system_name):
+        path.replace("\\\\","/")
     comment_txt_name = str(int(time.time()))+".txt"
     for num in range(1):
         """解析时间"""
@@ -77,7 +83,12 @@ def get_comment(begin_day ,end_day ):
                 detail_comment = requests.get(href)
                 detail_comment.encoding = "utd-8"
                 """获取具体描述内容写入临时文件"""
-                detail_comment_content = BeautifulSoup(detail_comment.text,"html.parser").select(".articalContent")[0].text
+                comment_content = BeautifulSoup(detail_comment.text,"html.parser");
+                # shtml结尾链接特殊处理
+                if(href.endswith("shtml")):
+                    detail_comment_content = comment_content.select("meta")[6].attrs["content"]
+                else:
+                    detail_comment_content =  comment_content.select(".articalContent")[0].text
                 out = open(path+"/static/comment_picture/"+comment_txt_name,"a+",encoding="utf-8")
                 detail_comment_content = deal_invalid_word(detail_comment_content)
                 out.write(detail_comment_content)
@@ -95,7 +106,7 @@ def deal_invalid_word(detail_comment_content):
     cursor.execute(sql)
     result = cursor.fetchall()
     for row in result:
-        detail_comment_content = detail_comment_content.replace(row["invalid_word"])
+        detail_comment_content = detail_comment_content.replace(row["invalid_word"],"")
 
     return detail_comment_content
 
@@ -107,9 +118,57 @@ def save_word_nephogram(begin_day,end_day,comment_txt_name):
     connection = pool.get_connection()
     sql = "insert into trade_word_nephogram(begin_time,end_time,picture_name) value (%s,%s,%s)"
     cursor = connection.cursor()
+    comment_txt_name = comment_txt_name.replace("txt","jpg")
     cursor.execute(sql,(begin_day,end_day,comment_txt_name))
     cursor.connection.commit()
     result = cursor.fetchone()
+    connection.close()
     print(result)
 
+"""添加无效词汇"""
+def add_field_word(field_word):
+    """分隔字符 获取多个词汇"""
+    field_words = field_word.split(",")
+    words_list = []
+    for word in field_words:
+        words_list.append((word,))
+    pool = mysql_pool.sql_pool()
+    connection = pool.get_connection()
+    sql = "insert into trade_invalid_word(invalid_word) values (%s)"
+    cursor = connection.cursor()
+    cursor.executemany(sql,tuple(words_list))
+    cursor.connection.commit()
+    result = cursor.fetchone()
+    print(result)
+    connection.close()
+
+"""获取历史查询图片"""
+def get_history_picture():
+    pool = mysql_pool.sql_pool()
+    connection = pool.get_connection()
+    sql = "select begin_time,end_time,picture_name from trade_word_nephogram order by id desc limit 10"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+
+    res = []
+
+    for row in result:
+        picture = sina_comment_picture.picture(row["begin_time"],row["end_time"],row["picture_name"])
+        res.append(picture.picture_to_string(picture))
+    # print(result)
+    return res
+
+
+# picture = get_history_picture()
+# print(picture)
+# add_field_word("")
 # save_word_nephogram("2017-01-01 08:45:45","2017-01-01 08:45:45","das,txt")
+
+# print(platform.system())
+
+# dat = requests.get("https://finance.sina.com.cn/stock/jsy/2019-09-09/doc-iicezzrq4598453.shtml")
+# dat.encoding = "utf-8"
+# format = BeautifulSoup(dat.text,"html.parser")
+# find = format.find(name="description")
+# print(find)

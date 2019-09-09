@@ -7,18 +7,23 @@ import jieba
 import os
 import sina_service
 import app
+import platform
 
 def generate_word_nephogram(comment_txt_name):
 
     path = app.get_path()
+
+    system_name = platform.system()
+    if ("Windows" == system_name):
+        path.replace("\\\\", "/")
     text=open(path+'/static/comment_picture/'+comment_txt_name,encoding='utf-8').read() #读取的文本
     jbText=' '.join(jieba.cut(text))
     imgMask = np.array(Image.open(path+'/static/comment_picture/word_background.jpg'))   #读入背景图片
     wc=WordCloud(
         background_color='white',
         max_words=500,
-        # font_path='msyh.ttc',    #默认不支持中文window专用
-        font_path='/System/Library/Fonts/Hiragino Sans GB.ttc', # 设置字体格式  mac专用
+        font_path='msyh.ttc',    #默认不支持中文window专用
+        # font_path='/System/Library/Fonts/Hiragino Sans GB.ttc', # 设置字体格式  mac专用
 
         mask=imgMask,  #设置背景图片
         random_state=40 #生成多少种配色方案

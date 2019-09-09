@@ -34,8 +34,19 @@
         <hr>
     </div>
 
-    <div>
+    <div class="sina_picture_night">
 
+        <div class='col-sm-2 time-frame-night'>
+           <label style="color: red">提示：多个词汇之间用英文逗号分隔</label>
+        </div>
+        <div class='col-sm-2 time-frame-night'>
+            <div class="form-group time-night">
+                <input type="text"  id="field_word" placeholder="新增屏蔽词汇" class="form-control">
+            </div>
+            <div class="form-group time-night">
+                <button class="glyphicon glyphicon-plus query-comment-night" onclick="add_shield_word()">增加屏蔽词汇</button>
+            </div>
+        </div>
         <div class='col-sm-2 time-frame-night'>
             <div class="form-group time-night ">
                 <div class='input-group date datetimePicker' >
@@ -64,6 +75,12 @@
 
          <div  class='col-sm-2 time-frame-night'>
             <img id="stock_comment_img" src=""/>
+        </div>
+    </div >
+    <div class="sina_picture_night">
+        <label>历史图片</label>
+        <div>
+            <img src="/static/comment_picture/word_background.jpg">
         </div>
     </div>
 

@@ -18,3 +18,14 @@ def get_word_nephogram():
     result = {"code" : "0000","picture_url" : comment_txt.split(".")[0]+".jpg"}
     return result
 
+
+"""添加屏蔽词汇"""
+@blueprint.route('/add_shield_word', methods=['POST'])
+def add_shield_word():
+    field_word = request.form.get("field_word")
+
+    sina_service.add_field_word(field_word)
+    result = {"code" : "0000"}
+    return result
+
+
