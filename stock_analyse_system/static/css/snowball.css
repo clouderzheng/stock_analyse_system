@@ -12,15 +12,26 @@
     border-radius: 11%;
 }
 .query-comment-night{
-    width: 56%;
-    height: 35px;
+    width: 103%;
+    height: 41px;
     border-radius: 11%;
+    color: #0c6ce8;
+    font-family: cursive;
 }
 .sina_picture_night{
-    width: 20%;
     float: left;
     text-align: center;
     font-size: 24px;
     color: #ec4f0f;
     font-family: cursive;
+}
+img{
+    border: 2px solid #1340e46e;
+    margin: 2px;
+    width: 50%;
+}
+.sina-history-time{
+    font-family: -webkit-pictograph;
+    font-size: 14px;
+    color: #5b0cf1fc;
 }

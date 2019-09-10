@@ -37,4 +37,10 @@ function add_shield_word() {
             alert("添加失败，请联系管理员")
         }
     })
+};
+
+function open_history_picture(t) {
+
+    $("#stock_comment_img").attr('src', t.src);
+
 }

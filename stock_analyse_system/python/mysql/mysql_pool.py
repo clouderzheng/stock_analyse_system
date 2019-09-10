@@ -19,5 +19,5 @@ class sql_pool():
 # pool = sql_pool()
 # con = pool.get_connection()
 # cursor = con.cursor()
-# cursor.execute("select * from system_user")
+# cursor.execute("insert into txt (date) values %")
 # print(cursor.fetchone())

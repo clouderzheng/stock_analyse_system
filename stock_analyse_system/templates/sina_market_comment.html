@@ -34,9 +34,9 @@
         <hr>
     </div>
 
-    <div class="sina_picture_night">
+    <div class="sina_picture_night" style="width: 80%">
 
-        <div class='col-sm-2 time-frame-night'>
+        <div class='col-sm-2 time-frame-night' style="color: red;text-align: left;">
            <label style="color: red">提示：多个词汇之间用英文逗号分隔</label>
         </div>
         <div class='col-sm-2 time-frame-night'>
@@ -51,7 +51,7 @@
             <div class="form-group time-night ">
                 <div class='input-group date datetimePicker' >
                     <span class="input-group-addon">开始时间</span>
-                    <input id="begin_time" type='text' class="form-control"/>
+                    <input id="begin_time" type='text' class="form-control" style="width: 152%;"/>
                     <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -60,7 +60,7 @@
             <div class="form-group time-night">
                 <div class='input-group date datetimePicker' >
                     <span class="input-group-addon">结束时间</span>
-                    <input id="end_time" type='text' class="form-control"/>
+                    <input id="end_time" type='text' class="form-control" style="width: 152%;"/>
                     <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -73,15 +73,12 @@
             </div>
         </div>
 
-         <div  class='col-sm-2 time-frame-night'>
-            <img id="stock_comment_img" src=""/>
+         <div  style="text-align: left" class='col-sm-2 time-frame-night'>
+            <img  id="stock_comment_img" src=""/>
         </div>
     </div >
-    <div class="sina_picture_night">
+    <div class="sina_picture_night" style="width: 20%" id="history_picture">
         <label>历史图片</label>
-        <div>
-            <img src="/static/comment_picture/word_background.jpg">
-        </div>
     </div>
 
 </div>
@@ -93,6 +90,26 @@
             html += "<option >"+i+"</option>"
         }
         $("#page").append(html);
+         var token = check_token();
+        $.ajax({
+            url : "/sina/get_history_picture",
+            type : "post",
+            data : {"token":token},
+            success : function (res) {
+                if(res.code = "0000"){
+                    var html = "";
+                    var pictures = res.pictures;
+                    for(var index in pictures){
+                        var  picture_name = pictures[index].picture_name
+                        html += "<div class='sina-history-time'><label>2019-09-08 23:58:48  --  2019-09-08 23:58:48</label><img onclick='open_history_picture(this)' src='/static/comment_picture/"+picture_name+"'></div>";
+                    }
+                    $("#history_picture").append(html);
+                }
+            },
+            error : function () {
+                alert("获取历史数据失败")
+            }
+        })
     })
 </script>
 </body>

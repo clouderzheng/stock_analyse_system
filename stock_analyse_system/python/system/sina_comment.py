@@ -29,3 +29,11 @@ def add_shield_word():
     return result
 
 
+"""获取历史图片轮播"""
+@blueprint.route('/get_history_picture', methods=['POST'])
+def get_history_picture():
+    pictures = sina_service.get_history_picture()
+    result = {"code" : "0000","pictures":pictures}
+    return result
+
+
