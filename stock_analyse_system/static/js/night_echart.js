@@ -59,7 +59,7 @@ function echart_k(times,codeName,data,indexName,volume,yaxis) {
             data:volume,// 成交量
             itemStyle:{
                      normal:{
-                       color:function (params) {
+                       color:function (params,data) {
                            var index = params.dataIndex;
                            if(index == 0){
                                 return "red";
@@ -81,6 +81,7 @@ var myChart = echarts.init(document.getElementById(indexName));
 myChart.setOption(option);
 };
 
+//校验token是否存在方法
 function check_token() {
     var token = sessionStorage.getItem("token");
     if(token == undefined){

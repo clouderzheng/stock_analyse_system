@@ -64,3 +64,15 @@
     color: #1c0e88;
     font-size: 24px;
 }
+thead{
+    color: #2611d4;
+    font-size: 18px;
+    font-family: cursive;
+    background-color: aliceblue;
+}
+tbody{
+    color: #f10914;
+    font-size: 15px;
+    font-family: cursive;
+    background-color: #d4c6be24;
+}

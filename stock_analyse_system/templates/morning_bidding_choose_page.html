@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>snowball combination</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/snowball.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/static/css/themify-icons.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/js/night_echart.js"></script>
+    <script src="/static/js/bindding.js"></script>
+
+</head>
+<body>
+<div>
+    <div>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header title-format-night">
+                    竞价选股
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="content-format-night">
+        <label>早盘竞价选股是根据早盘竞价时间 9:00 - 9:25 时间段内成交量大小降序排列，选出指定涨幅区间的股票;参数:</label><br>
+        <label>数量 : 根据成交量排序，选出前多少条数据进行观察数量;</label>
+        <label>涨幅区间:  最低涨幅与最大涨幅,数值表示 例 : 2表示 2%</label>
+    </div>
+    <div>
+        <hr>
+    </div>
+
+    <div>
+        <div class='col-sm-2 time-frame-night'>
+
+            <div class="form-group time-night">
+                <input type="text"  id="count" placeholder="数量" class="form-control">
+            </div>
+            <div class="form-group time-night">
+                <input type="text"  id="min_gain" placeholder="最低涨幅" class="form-control">
+            </div>
+            <div class="form-group time-night">
+                <input type="text"  id="max_gain" placeholder="最大涨幅" class="form-control">
+            </div>
+            <div class="form-group time-night">
+               <button class="glyphicon glyphicon-search query-night" onclick="bidding_query()" >查询</button>
+            </div>
+        </div>
+
+         <div  class='col-sm-2 time-frame-night'>
+            <table class="table">
+                <thead>
+                    <td>股票名称</td>
+                    <td>股票代码</td>
+                    <td>当前价格</td>
+                    <td>成交量</td>
+                    <td>涨跌幅</td>
+                </thead>
+                <tbody id="stock_info">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

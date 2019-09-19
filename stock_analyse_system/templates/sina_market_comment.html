@@ -101,7 +101,7 @@
                     var pictures = res.pictures;
                     for(var index in pictures){
                         var  picture_name = pictures[index].picture_name
-                        html += "<div class='sina-history-time'><label>2019-09-08 23:58:48  --  2019-09-08 23:58:48</label><img onclick='open_history_picture(this)' src='/static/comment_picture/"+picture_name+"'></div>";
+                        html += "<div class='sina-history-time'><label> "+pictures[index].begin_time +" --   "+pictures[index].end_time + "</label><img onclick='open_history_picture(this)' src='/static/comment_picture/"+picture_name+"'></div>";
                     }
                     $("#history_picture").append(html);
                 }

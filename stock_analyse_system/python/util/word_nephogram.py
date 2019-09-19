@@ -42,3 +42,5 @@ def generate_word_nephogram(comment_txt_name):
 # generate_word_nephogram("comment.txt")
 
 # print("comment.txt".split(".")[0])
+
+
