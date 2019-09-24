@@ -3,6 +3,7 @@ import crawl_html_url
 import json
 import time
 import snow_ball_bean
+import stock_service
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                          'Chrome/51.0.2704.63 Safari/537.36'}
@@ -50,17 +51,19 @@ def get_stock_position_combination(begin_time,end_time,page = 1,total = 1):
 """获取早盘竞价信息"""
 def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
     session = requests.session()
-    html_data = session.get(crawl_html_url.snow_ball_stock_info_url.format(3000), headers=headers)
+    session.get(crawl_html_url.snow_ball_main_url, headers=headers)
+    html_data = session.get(crawl_html_url.snow_ball_stock_info_url.format(4000), headers=headers)
     data = json.loads(html_data.text)
     stock_list = data["data"]["list"]
     result = []
 
+    sort_array = []
     """去除停盘的 停盘的没有交易量 无法比较"""
-    for index,stock  in enumerate(stock_list):
-        if(stock['volume'] == None):
-            stock_list.pop(index)
+    for stock  in stock_list:
+        if(stock['volume'] != None):
+            sort_array.append(stock)
     """根据成交量排序"""
-    sorts_list = sorted(stock_list,key=lambda x : x['volume'],reverse=True)
+    sorts_list = sorted(sort_array,key=lambda x : x['volume'],reverse=True)
     """获取指定排名前面的数据"""
     before_list = sorts_list[0:count]
     for stock in before_list:
@@ -71,9 +74,80 @@ def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
 
     return result
 
+
+"""获取回调到支撑位的股票"""
+def get_call_back_support_stock(call_back_day = 60,exclude_day = 20,float_per = 2):
+    # 获取所有股票
+    stock_list = stock_service.get_stock_info()
+
+    # 获取此时时间
+    current_time = int(time.time() * 1000)
+
+
+    stock_array = []
+    for stock in stock_list:
+        try:
+            session = requests.session()
+            session.get(crawl_html_url.snow_ball_main_url, headers=headers)
+            html_data = session.get(crawl_html_url.snow_ball_single_stock_info_url.format(stock["area_stock_code"],current_time,call_back_day), headers=headers)
+            data = json.loads(html_data.text)
+            items = data["data"]["item"]
+
+            """查询结果小于回溯天数 可能是新股 跳过"""
+            if(len(items) < call_back_day):
+                continue
+            #获取此时最低价
+            current_low_price = items[call_back_day - 1][4]
+            #获取此时最新报价
+            current_new_price = items[call_back_day - 1][5]
+            # 获取此时最低价时间
+            current_low_day = items[call_back_day - 1][0]
+
+            # 将排除之后的日期根据最高价排序
+            last_days = items[:(call_back_day - exclude_day)]
+            sorts_list = sorted(last_days, key=lambda x: x[3], reverse=True)
+            # 获取上个高点价格
+            last_high_price = sorts_list[0][3]
+            # 获取上个高点时间
+            last_high_day = sorts_list[0][0]
+
+            # 计算两个价格之间的相差波动率
+            percent = (current_low_price - last_high_price)/ last_high_day
+            # 判断计算结果是否在指定区间内
+            if(percent < float_per):
+                stock_info = {"current_new_price" : current_new_price,"current_low_price" : current_low_price,"current_low_day":current_low_day,"last_high_price":last_high_price,"last_high_day":last_high_day,\
+                              "stock_name":stock["stock_name"],"area_stock_code":stock["area_stock_code"],"percent":round(percent * 100,2)}
+
+                stock_array.append(stock_info)
+        except Exception:
+            print(stock)
+    return stock_array
+
 # list = get_biding_info(30,4,2)
 # for stock in list:
 #     print(stock["name"])
 # combination = get_stock_position_combination("2019-09-05 00:15:23", "2019-09-06 14:15:23", total=60)
 # for key in combination:
 #     print(key,":",combination[key].stock_name,combination[key].stock_code,combination[key].stock_count,)
+#
+# import time
+# current = int(time.time())
+#
+# print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(current)))
+#
+# current = current - 60 * 60 * 24 * 5
+# print(current)
+# print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(current)))
+
+# session = requests.session()
+# session.get(crawl_html_url.snow_ball_main_url, headers=headers)
+# html_data = session.get("https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SZ300085&begin=1569310406000&period=day&type=before&count=-60&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance", headers=headers)
+# data = json.loads(html_data.text)
+# items = data["data"]["item"]
+# current_low_price = items[60 - 1][4]
+# print(current_low_price)
+# last_days = items[:(60 - 20)]
+#
+# print(last_days)
+# sorts_list = sorted(last_days, key=lambda x: x[3], reverse=True)
+# print(sorts_list)

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>call back support choose stock</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/snowball.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/static/css/themify-icons.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/js/night_echart.js"></script>
+    <script src="/static/js/bindding.js"></script>
+
+</head>
+<body>
+<div>
+    <div>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header title-format-night">
+                    回调支撑选股
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="content-format-night">
+        <label>回调支撑选股是根据股价创新高后，会进行一段时间的调整，调整到上个高点会有一个强力支撑，如若在支撑位获得支撑，则会展开第二段反弹，否则股价会一泻千里。</label><br>
+         <label>参数:</label>
+        <label>回溯天数：回溯天数是指从当天开始，需要往前查询的时间天数，</label>
+        <label>排除天数:排除天数是排除当前下跌过程中的高点，从排除天数的那天开始往前的回溯天数里面，查询在这段时间内的高点</label>
+        <label>波动幅度:波动幅度是指当前最低价格相对上个高点最高价格的涨跌率的绝对值。(例:2个点的浮动，涨2%或者跌-2%，填2表示 -2% - 2%)</label>
+    </div>
+    <div>
+        <hr>
+    </div>
+
+    <div>
+        <div class='col-sm-2 time-frame-night'>
+
+            <div class="form-group time-night">
+                <input type="number"  id="call_back_day" placeholder="回溯天数" class="form-control">
+            </div>
+            <div class="form-group time-night">
+                <input type="number"  id="exclude_day" placeholder="排除天数" class="form-control">
+            </div>
+            <div class="form-group time-night">
+                <input type="number"  id="float_per" placeholder="波动幅度" class="form-control">
+            </div>
+            <div class="form-group time-night">
+               <button class="glyphicon glyphicon-search query-night" onclick="call_back_query()" >查询</button>
+            </div>
+        </div>
+
+         <div  class='col-sm-2 time-frame-night'>
+            <table class="table">
+                <thead>
+                    <td>股票名称</td>
+                    <td>股票代码</td>
+                    <td>当前价格</td>
+                    <td>当前最低价</td>
+                    <td>当前最低价时间</td>
+                    <td>上个最高价</td>
+                    <td>上个最高价时间</td>
+                    <td>相差幅度</td>
+                </thead>
+                <tbody id="stock_info">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -8,6 +8,8 @@ snow_ball_investor_url = "https://xueqiu.com/cubes/rebalancing/show_origin.json?
 
 """雪球股票信息数据"""
 snow_ball_stock_info_url="https://xueqiu.com/service/v5/stock/screener/quote/list?page=1&size={}&order=desc&orderby=percent&order_by=percent&market=CN&type=sh_sz&_=1568860118055"
+"""雪球单只股票信息信息数据"""
+snow_ball_single_stock_info_url="https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol={}&begin={}&period=day&type=before&count={}&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance"
 
 
 

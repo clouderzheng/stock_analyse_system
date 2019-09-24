@@ -172,3 +172,14 @@ def get_history_picture():
 # format = BeautifulSoup(dat.text,"html.parser")
 # find = format.find(name="description")
 # print(find)
+
+# pool = mysql_pool.sql_pool()
+# connection = pool.get_connection()
+# # sql = "insert into zjy_21_20190628153041_0 (离职时间) value (%s)"
+# sql = "select code_short,code_full,stock_name,stock_letters,area_stock_code from trade_stock"
+# sql = sql +" where area_stock_code like %s or stock_name like %s or stock_letters like %s"
+# cursor = connection.cursor()
+#
+# cursor.execute(sql,("STXL","STXL","STXL"))
+# print(cursor.fetchall())
+# cursor.connection.commit()
