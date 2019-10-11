@@ -4,12 +4,14 @@ import json
 import time
 import snow_ball_bean
 import stock_service
+from mysql_pool import  sql_pool
+import datetime
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                          'Chrome/51.0.2704.63 Safari/537.36'}
 
 """获取雪球仓位组合"""
-def get_stock_position_combination(begin_time,end_time,page = 1,total = 1):
+def get_stock_position_combination(begin_time,end_time,page = 1,total = 50):
 
     begin_time_timestamp = int(time.mktime(time.strptime(begin_time , "%Y-%m-%d %H:%M:%S"))) * 1000
     end_time_timestamp = int(time.mktime(time.strptime(end_time , "%Y-%m-%d %H:%M:%S"))) * 1000
@@ -47,6 +49,10 @@ def get_stock_position_combination(begin_time,end_time,page = 1,total = 1):
                         result[stock_name] = bean
                     else:
                         bean.count = bean.stock_count + 1
+                    stock_info = (postion["stock_name"], postion["stock_symbol"], postion["price"], 0, datetime.datetime.today(), \
+                    datetime.datetime.today(), 2)
+                    save_strategy_stock_info(stock_info)
+
     return result
 """获取早盘竞价信息"""
 def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
@@ -71,10 +77,25 @@ def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
         """判断该股票涨幅是否在 指定区间内"""
         if(percent > min_gain and percent < max_gain):
             result.append(stock)
-
+            #持久化数据到mysql
+            stock_info = (stock["name"], stock["symbol"], stock["current"], stock["percent"],datetime.datetime.today(),datetime.datetime.today(), 1)
+            save_strategy_stock_info(stock_info)
     return result
 
 
+"""持久化策略数据"""
+def save_strategy_stock_info(stock_info):
+    # stock_info = (stock["name"],stock["symbol"],stock["current"],stock["percent"],stock["symbol"],time.time(),time.time(),1)
+    sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,create_time,update_time,strategy_category ) \
+          value (%s,%s,%s,%s,%s,%s,%s) "
+    con = sql_pool().get_connection()
+    cursor = con.cursor()
+    cursor.execute(sql, stock_info)
+    cursor.connection.commit()
+    con.close()
+
+# stock_info = ("光大银行","SH601818",4.09,3.81,datetime.datetime.today(),datetime.datetime.today(),1)
+# save_strategy_stock_info(stock_info)
 """获取回调到支撑位的股票"""
 def get_call_back_support_stock(call_back_day = 60,exclude_day = 20,float_per = 2):
     # 获取所有股票
@@ -151,3 +172,6 @@ def get_call_back_support_stock(call_back_day = 60,exclude_day = 20,float_per = 
 # print(last_days)
 # sorts_list = sorted(last_days, key=lambda x: x[3], reverse=True)
 # print(sorts_list)
+
+result = {"name":"night","age":25}
+print(result.get("name1"))
