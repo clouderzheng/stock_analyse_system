@@ -7,3 +7,8 @@ import datetime
 """
 def get_date_time(interval):
     return (datetime.datetime.today() + datetime.timedelta(interval)).strftime("%Y-%m-%d %H:%M:%S")
+
+def get_date(interval):
+    return (datetime.datetime.today() + datetime.timedelta(interval)).strftime("%Y-%m-%d")
+def get_date_time_line(interval):
+    return (datetime.datetime.today() + datetime.timedelta(interval)).strftime("%Y-%m-%d-%H-%M-%S")

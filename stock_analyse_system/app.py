@@ -5,6 +5,7 @@ from flask_script import Manager
 from apscheduler.schedulers.background import BackgroundScheduler
 import snow_ball_service
 import date_time_util
+import logger_util
 
 app = Flask(__name__)
 app.register_blueprint(auth.blueprint)
@@ -18,6 +19,7 @@ app.secret_key = "123"
 app.config['SESSION_TYPE'] = 'filesystem'
 # app.config['SECRET_KEY'] = '123'
 
+logger_util.logger_init()
 
 scheduler = BackgroundScheduler()
 

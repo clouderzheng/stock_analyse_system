@@ -1,0 +1,5 @@
+2019-10-12 11:05:33,385 - base.py[line:166] - INFO: Scheduler started
+2019-10-12 11:05:33,398 - _internal.py[line:122] - INFO:  * Running on http://localhost:9116/ (Press CTRL+C to quit)
+2019-10-12 11:05:58,015 - base.py[line:166] - INFO: Scheduler started
+2019-10-12 11:05:58,028 - _internal.py[line:122] - INFO:  * Running on http://localhost:9116/ (Press CTRL+C to quit)
+2019-10-12 11:36:53,208 - _internal.py[line:122] - INFO: 127.0.0.1 - - [12/Oct/2019 11:36:53] "POST /snowball/get_position_combination HTTP/1.1" 200 -

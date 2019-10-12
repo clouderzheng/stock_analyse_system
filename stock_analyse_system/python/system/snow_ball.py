@@ -1,7 +1,9 @@
 from flask import Blueprint,request
 import snow_ball_service
-import json
-from snow_ball_bean import  snowball_stock_info
+from snow_ball_bean import snowball_stock_info
+from scrapy.cmdline import execute
+import subprocess
+
 blueprint = Blueprint('snowball', __name__, url_prefix='/snowball')
 
 """获取仓位组合接口"""
@@ -16,6 +18,8 @@ def get_position_combination():
     for key in result:
         stock_list.append(snowball_stock_info.snowball_stock_info_tostring(result[key]))
 
+    subprocess.check_output(['scrapy','crawl','hotel'])
+    # execute(['scrapy','crawl','hotel'])
     res= {"code":"0000","stock_list":stock_list}
     return res
 
