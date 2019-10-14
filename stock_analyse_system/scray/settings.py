@@ -13,7 +13,9 @@ BOT_NAME = 'scray'
 
 SPIDER_MODULES = ['scray.spiders']
 NEWSPIDER_MODULE = 'scray.spiders'
-
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scray (+http://www.yourdomain.com)'

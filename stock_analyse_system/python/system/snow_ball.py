@@ -1,8 +1,8 @@
 from flask import Blueprint,request
 import snow_ball_service
 from snow_ball_bean import snowball_stock_info
-from scrapy.cmdline import execute
 import subprocess
+from hotel import HotelSpider
 
 blueprint = Blueprint('snowball', __name__, url_prefix='/snowball')
 
@@ -18,6 +18,7 @@ def get_position_combination():
     for key in result:
         stock_list.append(snowball_stock_info.snowball_stock_info_tostring(result[key]))
 
+    # HotelSpider(['https://baike.baidu.com/item/%E6%97%B6%E9%97%B4%E6%88%B3/6439235?fr=aladdin'])
     subprocess.check_output(['scrapy','crawl','hotel'])
     # execute(['scrapy','crawl','hotel'])
     res= {"code":"0000","stock_list":stock_list}
