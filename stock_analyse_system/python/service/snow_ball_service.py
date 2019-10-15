@@ -6,6 +6,7 @@ import snow_ball_bean
 import stock_service
 from mysql_pool import  sql_pool
 import datetime
+import get_characters_letters
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                          'Chrome/51.0.2704.63 Safari/537.36'}
@@ -86,8 +87,8 @@ def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
 """持久化策略数据"""
 def save_strategy_stock_info(stock_info):
     # stock_info = (stock["name"],stock["symbol"],stock["current"],stock["percent"],stock["symbol"],time.time(),time.time(),1)
-    sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,create_time,update_time,strategy_category ) \
-          value (%s,%s,%s,%s,%s,%s,%s) "
+    sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,strategy_category ) \
+          value (%s,%s,%s,%s,%s) "
     con = sql_pool().get_connection()
     cursor = con.cursor()
     cursor.execute(sql, stock_info)
@@ -144,6 +145,30 @@ def get_call_back_support_stock(call_back_day = 60,exclude_day = 20,float_per = 
             print(stock)
     return stock_array
 
+
+"""获取最新股票信息 判断是否需要更新数据库存储"""
+def get_stock_last_info():
+    # html = requests.get(crawl_html_url.snow_ball_stock_all_info.format(2))
+    session = requests.session()
+    session.get(crawl_html_url.snow_ball_main_url, headers=headers)
+    html = session.get(crawl_html_url.snow_ball_stock_all_info.format(2), headers=headers)
+    last_count = json.loads(html.text)['data']['count']
+
+    local_count = stock_service.get_stock_count()
+
+    # 判断本地与 最新股票数量是否相等 不相等删除原信息 重新 插入
+    if(local_count != last_count):
+        # 删除原信息
+        stock_service.delete_stock()
+        html = session.get(crawl_html_url.snow_ball_stock_all_info.format(last_count), headers=headers)
+        data_list = json.loads(html.text)['data']['list']
+        stock_list = []
+        for stock in data_list:
+            stock_list.append((stock['name'],stock['symbol'],stock['symbol'][2:],get_characters_letters.getPinyin(stock['name'])))
+        stock_service.add_stock_list(stock_list)
+
+# get_stock_last_info()
+
 # list = get_biding_info(30,4,2)
 # for stock in list:
 #     print(stock["name"])
@@ -173,5 +198,5 @@ def get_call_back_support_stock(call_back_day = 60,exclude_day = 20,float_per = 
 # sorts_list = sorted(last_days, key=lambda x: x[3], reverse=True)
 # print(sorts_list)
 
-result = {"name":"night","age":25}
-print(result.get("name1"))
+# result = {"name":"night","age":25}
+# print(result.get("name1"))

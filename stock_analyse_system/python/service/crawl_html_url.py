@@ -12,7 +12,7 @@ snow_ball_stock_info_url="https://xueqiu.com/service/v5/stock/screener/quote/lis
 # snow_ball_single_stock_info_url="https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol={}&begin={}&period=day&type=before&count={}&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance"
 snow_ball_single_stock_info_url="https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol={}&begin={}&period=day&type=before&count={}&indicator=kline"
 
-
+snow_ball_stock_all_info = "https://xueqiu.com/service/v5/stock/screener/quote/list?page=1&size={}&order=desc&orderby=percent&order_by=percent&market=CN&type=sh_sz&_=1571144454126"
 
 # 新浪地址
 sina_comment_url= "http://finance.sina.com.cn/roll/index.d.html?cid=56589&page={}"
