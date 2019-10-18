@@ -163,6 +163,7 @@ def get_stock_last_info():
         html = session.get(crawl_html_url.snow_ball_stock_all_info.format(last_count), headers=headers)
         data_list = json.loads(html.text)['data']['list']
         stock_list = []
+        """更新最新信息到数据库"""
         for stock in data_list:
             stock_list.append((stock['name'],stock['symbol'],stock['symbol'][2:],get_characters_letters.getPinyin(stock['name'])))
         stock_service.add_stock_list(stock_list)

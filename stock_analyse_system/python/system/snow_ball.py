@@ -2,7 +2,6 @@ from flask import Blueprint,request
 import snow_ball_service
 from snow_ball_bean import snowball_stock_info
 import subprocess
-from hotel import HotelSpider
 
 blueprint = Blueprint('snowball', __name__, url_prefix='/snowball')
 

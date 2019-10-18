@@ -1,7 +1,22 @@
 import snow_ball_service
+
+"""
+测试实现方法
+"""
+
+
+
+
+"""回调支撑方法
+原理：股票到达高点之后开始回调 落到前一个高点会获得支撑
+参数：回溯天数 需要查询时间
+
+排除天数  ： 除去最近多少天  找出回溯剩余时间最高点
+相差幅度  ： 上个高点 与当前 收盘价 相差幅度
+
+"""
 def call_back_support_stock(data):
 
-    print("开始解析:",data)
     # 回溯时间
     call_back_day = 60
     # 排除时间周期
@@ -48,17 +63,45 @@ def call_back_support_stock(data):
         snow_ball_service.save_strategy_stock_info(stock_info)
 
 
+"""获取主升浪形态股票 
+原理： 主升浪基本沿5日线上方盘旋即大于5日线 
+参数 ：回溯值  从今天开始 往前查询天数   容错天数： 允许几天落下5日线下 
+"""
 def get_up_wave(data):
 
-    """获取最近5日数据"""
-    items = data["data"]["item"]
-    last_five_data = items[-5:]
-    five_count = 0
-    for every_day in last_five_data:
-        five_count += every_day[5]
+    """回溯天数"""
+    call_back_day = 10
+    """容错天数"""
+    fault_day = 2
 
-    last_five_close_average_price = five_count
-    return
+    """计算5日线回溯天数"""
+    five_average_day = call_back_day + 5
+
+    """获取最近5日数据"""
+    items = data["data"]["item"][-five_average_day:]
+
+
+    for index in range(call_back_day):
+        """获取当天收盘价 多了5天计算平均值 所有位移5位 """
+        current_day_close_price = items[index + 5][5]
+        """获取计算5日价的 天数"""
+        calculate_five_day = items[index:5]
+        count = 0
+        for every_day in calculate_five_day:
+            count += every_day[5]
+
+        five_average_value = round(count / 5,2)
+        """判断收盘价是否低于5日线  低于5日线 容错日减一"""
+        if( current_day_close_price < five_average_value):
+            fault_day -= 1
+    """最终容错日大于-1  证明该股票符合策略"""
+    if( fault_day > -1):
+        current_day_data = items[-1]
+        stock_info = ('', data['data']['symbol'], current_day_data[5], current_day_data[7], 4)
+        snow_ball_service.save_strategy_stock_info(stock_info)
+
 
 # array = [1,2,3,4,5,6]
-# print(array[:3])
+# print(array[-1])
+# for i in range(10,15):
+#     print(i)

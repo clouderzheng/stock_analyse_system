@@ -33,6 +33,9 @@ if __name__ == '__main__':
     scheduler.add_job(snow_ball_service.get_biding_info(), 'cron', hour=9,minute=25)
     # 添加定时任务查询雪球仓位组合 23:40
     scheduler.add_job(snow_ball_service.get_stock_position_combination(date_time_util.get_date_time(-1),date_time_util.get_date_time(0)), 'cron', hour=23,minute=40)
+    """定时任务更新最新股票信息 每天下午4点"""
+    scheduler.add_job(snow_ball_service.get_stock_last_info(), 'cron', hour=16)
+
     manager.run()
 
 @app.before_request
