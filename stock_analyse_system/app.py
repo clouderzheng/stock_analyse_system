@@ -6,6 +6,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import snow_ball_service
 import date_time_util
 import logger_util
+from flask_apscheduler import APScheduler
+
+import logging
 
 app = Flask(__name__)
 app.register_blueprint(auth.blueprint)
@@ -14,7 +17,6 @@ app.register_blueprint(snow_ball.blueprint)
 app.register_blueprint(sina_comment.blueprint)
 
 app.jinja_env.auto_reload = True
-app.run(debug=True)
 app.secret_key = "123"
 app.config['SESSION_TYPE'] = 'filesystem'
 # app.config['SECRET_KEY'] = '123'
@@ -22,20 +24,24 @@ app.config['SESSION_TYPE'] = 'filesystem'
 logger_util.logger_init()
 
 scheduler = BackgroundScheduler()
+# scheduler = APScheduler()
+# scheduler.init_app(app)
 
-
-scheduler.start()
-
+# 添加定时任务查询竞价信息 每天 9:25
+scheduler.add_job(snow_ball_service.get_biding_info, 'cron', hour=21,minute=11)
+# scheduler.add_job(snow_ball_service.get_biding_info(), 'interval', seconds=5)
+#
+# 添加定时任务查询雪球仓位组合 23:40
+scheduler.add_job(snow_ball_service.get_stock_position_combination, 'cron', hour=23,minute=40)
+"""定时任务更新最新股票信息 每天下午4点"""
+scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=21,minute=57)
 manager = Manager(app)
+scheduler.start()
 if __name__ == '__main__':
 
-    # 添加定时任务查询竞价信息 每天 9:25
-    scheduler.add_job(snow_ball_service.get_biding_info(), 'cron', hour=9,minute=25)
-    # 添加定时任务查询雪球仓位组合 23:40
-    scheduler.add_job(snow_ball_service.get_stock_position_combination(date_time_util.get_date_time(-1),date_time_util.get_date_time(0)), 'cron', hour=23,minute=40)
-    """定时任务更新最新股票信息 每天下午4点"""
-    scheduler.add_job(snow_ball_service.get_stock_last_info(), 'cron', hour=16)
 
+
+    app.run(debug=True)
     manager.run()
 
 @app.before_request

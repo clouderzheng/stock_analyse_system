@@ -1,5 +1,5 @@
-import time
-import datetime
+# import time
+# import datetime
 # from apscheduler.schedulers.blocking import BlockingScheduler
 # from apscheduler.schedulers.background import BackgroundScheduler
 #
@@ -14,8 +14,8 @@ import datetime
 # # 采用阻塞的方式
 # # 采用固定时间间隔（interval）的方式，每隔5秒钟执行一次
 # # scheduler.add_job(job, 'interval', seconds=5)
-# scheduler.add_job(job, 'cron', hour=13,minute=58)
-#
+# scheduler.add_job(job, 'cron', hour=21,minute=6)
+# #
 #
 # scheduler.start()
 #
@@ -25,8 +25,8 @@ import datetime
 # #     print('main-start:', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
 # #     time.sleep(2)
 # #     print('main-end:', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
-import snow_ball_service
-import date_time_util
-# print(type((datetime.datetime.today() + datetime.timedelta(-1)).strftime("%Y-%m-%d %H:%M:%S")))
-# print(datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S"))
-snow_ball_service.get_stock_position_combination(date_time_util.get_date_time(-2),date_time_util.get_date_time(0))
+# # import snow_ball_service
+# # import date_time_util
+# # # print(type((datetime.datetime.today() + datetime.timedelta(-1)).strftime("%Y-%m-%d %H:%M:%S")))
+# # # print(datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S"))
+# # snow_ball_service.get_stock_position_combination(date_time_util.get_date_time(-2),date_time_util.get_date_time(0))

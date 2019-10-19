@@ -6,13 +6,15 @@ import snow_ball_bean
 import stock_service
 from mysql_pool import  sql_pool
 import datetime
+import date_time_util
 import get_characters_letters
+import logging
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                          'Chrome/51.0.2704.63 Safari/537.36'}
 
 """获取雪球仓位组合"""
-def get_stock_position_combination(begin_time,end_time,page = 1,total = 50):
+def get_stock_position_combination(begin_time = date_time_util.get_date_time(-1),end_time = date_time_util.get_date_time(0),page = 1,total = 50):
 
     begin_time_timestamp = int(time.mktime(time.strptime(begin_time , "%Y-%m-%d %H:%M:%S"))) * 1000
     end_time_timestamp = int(time.mktime(time.strptime(end_time , "%Y-%m-%d %H:%M:%S"))) * 1000
@@ -50,13 +52,14 @@ def get_stock_position_combination(begin_time,end_time,page = 1,total = 50):
                         result[stock_name] = bean
                     else:
                         bean.count = bean.stock_count + 1
-                    stock_info = (postion["stock_name"], postion["stock_symbol"], postion["price"], 0, datetime.datetime.today(), \
-                    datetime.datetime.today(), 2)
+                    stock_info = (postion["stock_name"], postion["stock_symbol"], postion["price"], 0,2)
                     save_strategy_stock_info(stock_info)
 
     return result
 """获取早盘竞价信息"""
 def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
+
+
     session = requests.session()
     session.get(crawl_html_url.snow_ball_main_url, headers=headers)
     html_data = session.get(crawl_html_url.snow_ball_stock_info_url.format(4000), headers=headers)
@@ -79,7 +82,7 @@ def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
         if(percent > min_gain and percent < max_gain):
             result.append(stock)
             #持久化数据到mysql
-            stock_info = (stock["name"], stock["symbol"], stock["current"], stock["percent"],datetime.datetime.today(),datetime.datetime.today(), 1)
+            stock_info = (stock["name"], stock["symbol"], stock["current"], stock["percent"], 1)
             save_strategy_stock_info(stock_info)
     return result
 
@@ -148,6 +151,8 @@ def get_call_back_support_stock(call_back_day = 60,exclude_day = 20,float_per = 
 
 """获取最新股票信息 判断是否需要更新数据库存储"""
 def get_stock_last_info():
+
+    logging.info("开始同步最新股票信息")
     # html = requests.get(crawl_html_url.snow_ball_stock_all_info.format(2))
     session = requests.session()
     session.get(crawl_html_url.snow_ball_main_url, headers=headers)

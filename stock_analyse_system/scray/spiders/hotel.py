@@ -38,4 +38,5 @@ class HotelSpider(scrapy.Spider):
 
         data = json.loads(response.text)
         strategy_service.call_back_support_stock(data)
+        strategy_service.get_up_wave(data)
         pass
