@@ -1,14 +1,11 @@
 from flask import Flask,request,redirect,session,render_template
-from system import auth,home_index,snow_ball,sina_comment
+from python.system import auth,home_index,snow_ball,sina_comment
 
 from flask_script import Manager
 from apscheduler.schedulers.background import BackgroundScheduler
-import snow_ball_service
-import date_time_util
-import logger_util
-from flask_apscheduler import APScheduler
+from python.service import snow_ball_service
+from python.util import logger_util
 
-import logging
 
 app = Flask(__name__)
 app.register_blueprint(auth.blueprint)

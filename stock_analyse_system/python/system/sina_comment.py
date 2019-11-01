@@ -1,7 +1,7 @@
 from flask import Blueprint,request
 blueprint = Blueprint('sina', __name__, url_prefix='/sina')
-import sina_service
-import word_nephogram
+from python.service import sina_service
+from python.util import word_nephogram
 
 """爬取新浪股票大盘评论 生成词云图"""
 @blueprint.route('/get_word_nephogram', methods=['POST'])

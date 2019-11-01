@@ -1,14 +1,14 @@
 import requests
-import crawl_html_url
+from python.service import crawl_html_url
 import datetime
 from bs4 import BeautifulSoup
-import mysql_pool
+from python.mysql import mysql_pool
 import re
 import time
 import traceback
 import app
 import platform
-import sina_comment_picture
+from python.domain import sina_comment_picture
 
 """爬取指定时间的大盘评论"""
 def get_comment(begin_day ,end_day ):

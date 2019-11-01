@@ -1,11 +1,8 @@
 from wordcloud import WordCloud,ImageColorGenerator
-import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
-from os import path
 import jieba
 import os
-import sina_service
 import app
 import platform
 

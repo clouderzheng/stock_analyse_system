@@ -1,4 +1,4 @@
-from get_international_indice import InternationalIndice
+from python.jq.get_international_indice import InternationalIndice
 import numpy as np
 import math
 def get_international_index(result,code ,code_name):

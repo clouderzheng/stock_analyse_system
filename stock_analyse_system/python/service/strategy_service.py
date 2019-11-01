@@ -1,4 +1,4 @@
-import snow_ball_service
+from python.service import snow_ball_service
 
 """
 测试实现方法

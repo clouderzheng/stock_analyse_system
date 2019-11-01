@@ -1,6 +1,6 @@
 import jqdatasdk as jq
 from jqdatasdk import finance
-import login
+from python.jq import login
 import datetime
 """获取国际化指标"""
 class InternationalIndice(object):

@@ -1,7 +1,7 @@
-import get_index_service
+from python.jq import get_index_service
 from flask import Blueprint
-import system_code
-import jq_config
+from python.system import system_code
+from python.jq import jq_config
 blueprint = Blueprint('home', __name__, url_prefix='/home')
 
 @blueprint.route('/index', methods=['POST'])

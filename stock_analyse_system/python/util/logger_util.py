@@ -1,5 +1,5 @@
 import logging
-import date_time_util
+from python.util import date_time_util
 from logging.handlers import TimedRotatingFileHandler
 
 """日志初始化配置"""

@@ -1,4 +1,4 @@
-from mysql_pool import sql_pool
+from python.mysql.mysql_pool import sql_pool
 
 
 """获取数据库股票信息"""
