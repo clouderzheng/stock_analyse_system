@@ -1,3 +1,4 @@
 .idea
 *-log.txt
 mysql_config.py
+*.pyc
