@@ -16,7 +16,6 @@ from python.service import snow_ball_service
 
 """
 def call_back_support_stock(data):
-
     # 回溯时间
     call_back_day = 60
     # 排除时间周期
@@ -51,7 +50,8 @@ def call_back_support_stock(data):
     last_high_day = sorts_list[0][0]
 
     # 计算两个价格之间的相差波动率
-    percent = (current_low_price - last_high_price) / last_high_day
+    percent = (current_low_price - last_high_price) / last_high_price
+    percent = abs(round(percent * 100))
     # 判断计算结果是否在指定区间内
     if (percent < float_per):
         # stock_info = {"current_new_price": current_new_price, "current_low_price": current_low_price,
@@ -68,7 +68,6 @@ def call_back_support_stock(data):
 参数 ：回溯值  从今天开始 往前查询天数   容错天数： 允许几天落下5日线下 
 """
 def get_up_wave(data):
-
     """回溯天数"""
     call_back_day = 10
     """容错天数"""
@@ -78,14 +77,15 @@ def get_up_wave(data):
     five_average_day = call_back_day + 5
 
     """获取最近5日数据"""
-    items = data["data"]["item"][-five_average_day:]
+    item_ = data["data"]["item"]
+    items = item_[-five_average_day:]
 
 
     for index in range(call_back_day):
         """获取当天收盘价 多了5天计算平均值 所有位移5位 """
         current_day_close_price = items[index + 5][5]
         """获取计算5日价的 天数"""
-        calculate_five_day = items[index:5]
+        calculate_five_day = items[index + 1:index + 6]
         count = 0
         for every_day in calculate_five_day:
             count += every_day[5]

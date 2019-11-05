@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.http import Request,FormRequest
-import crawl_html_url
+from python.service import crawl_html_url
 
 class PachSpider(scrapy.Spider):                            #定义爬虫类，必须继承scrapy.Spider
     name = 'spiders2'                                           #设置爬虫名称

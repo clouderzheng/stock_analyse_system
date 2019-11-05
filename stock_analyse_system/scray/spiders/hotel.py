@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import scrapy
-import stock_service
+from python.service import stock_service,strategy_service,crawl_html_url
 import json
-import crawl_html_url
-import date_time_util
+from python.util import date_time_util
 from scrapy.http import Request,FormRequest
-import strategy_service
+import traceback
 
 class HotelSpider(scrapy.Spider):
     header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0'}  # 设置浏览器用户代理
@@ -30,13 +29,20 @@ class HotelSpider(scrapy.Spider):
     # start_urls  = url
     def parse(self, response):
         self.index += 1
-        yield Request(self.template.format(self.stocks[self.index]['area_stock_code'],self.timestamp,-60),callback=self.strategy_parse,headers=self.header,meta={'cookiejar':True})
+        for stock in self.stocks:
+           yield Request(self.template.format(stock['area_stock_code'],self.timestamp,-60),callback=self.strategy_parse,headers=self.header,meta={'cookiejar':True})
+
         pass
 
     """回调策略"""
     def strategy_parse(self,response):
 
         data = json.loads(response.text)
-        strategy_service.call_back_support_stock(data)
-        strategy_service.get_up_wave(data)
+        if (len(data["data"]["item"]) < 60):
+            return
+        try:
+            strategy_service.call_back_support_stock(data)
+            strategy_service.get_up_wave(data)
+        except Exception as e:
+            traceback.print_exc()
         pass

@@ -3,7 +3,7 @@ from python.mysql.mysql_pool import sql_pool
 
 """获取数据库股票信息"""
 def get_stock_info(key_word = None):
-    sql = "select code_short,code_full,stock_name,stock_letters,area_stock_code from trade_stock"
+    sql = "select code_short,stock_name,stock_letters,area_stock_code from trade_stock"
     con = sql_pool().get_connection()
     cursor = con.cursor()
     """判断是否条件查询"""
