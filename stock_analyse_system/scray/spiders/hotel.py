@@ -3,7 +3,7 @@ import scrapy
 from python.service import stock_service,strategy_service,crawl_html_url
 import json
 from python.util import date_time_util
-from scrapy.http import Request,FormRequest
+from scrapy.http import Request
 import traceback
 
 class HotelSpider(scrapy.Spider):

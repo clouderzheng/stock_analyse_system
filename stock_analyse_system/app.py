@@ -1,5 +1,5 @@
 from flask import Flask,request,redirect,session,render_template
-from python.system import auth,home_index,snow_ball,sina_comment
+from python.system import auth,home_index,snow_ball,sina_comment,spider_signal
 
 from flask_script import Manager
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -12,6 +12,8 @@ app.register_blueprint(auth.blueprint)
 app.register_blueprint(home_index.blueprint)
 app.register_blueprint(snow_ball.blueprint)
 app.register_blueprint(sina_comment.blueprint)
+app.register_blueprint(spider_signal.blueprint)
+
 
 app.jinja_env.auto_reload = True
 app.secret_key = "123"
@@ -33,7 +35,8 @@ scheduler.add_job(snow_ball_service.get_stock_position_combination, 'cron', hour
 """定时任务更新最新股票信息 每天下午4点"""
 scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=21,minute=9)
 """定时任务爬取所有股票信息"""
-scheduler.add_job(query_all_stock_service.query_stock, 'cron', hour=23,minute=26)
+scheduler.add_job(query_all_stock_service.query_stock, 'cron', hour=23,minute=22)
+
 manager = Manager(app)
 scheduler.start()
 if __name__ == '__main__':
@@ -47,7 +50,7 @@ if __name__ == '__main__':
 def filter_request():
     path = request.path
 
-    if(path != "/auth/login" and not path.startswith("/static") and path != "/auth/verify" ):
+    if(path != "/auth/login" and not path.startswith("/static") and path != "/auth/verify" and path != "/spider/get_every_signal" ):
         token = request.args.get("token")
         if (token == None):
             token = request.form.get("token")
