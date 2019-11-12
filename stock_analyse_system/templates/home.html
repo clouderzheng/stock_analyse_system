@@ -35,20 +35,7 @@
                         </div>
 
                     </div>
-                {#    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
-                               href="#strategy">策略(strategy)</a>
-                        </div>
-                        <div id="strategy" class="panel-collapse collapse">
-                            <div class="panel-body" id="average_strategy" onclick="change_content('trend_strategy')">
-                                average strategy
-                            </div>
-                            <div class="panel-body" id="trend_strategy"  onclick="change_content('trend_strategy')">
-                                trend strategy
-                            </div>
-                        </div>
-                    </div>#}
+
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
@@ -63,7 +50,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
-                               href="#screen_stock">选股(choose)</a>
+                               href="#screen_stock" onclick="query_strategy()">策略选股(choose)</a>
                         </div>
                         <div id="screen_stock" class="panel-collapse collapse">
                             <div class="panel-body" onclick="change_content('snowball_combination_page')">
@@ -74,6 +61,9 @@
                             </div>
                             <div class="panel-body" onclick="change_content('call_back_support_choose_page')">
                                 <a >回调支撑选股 </a>
+                            </div>
+                             <div class="panel-body" onclick="change_content('call_back_support_choose_page')">
+                                <a >策略选股 </a>
                             </div>
                         </div>
                     </div>
@@ -116,6 +106,10 @@
 
     function refresh() {
         window.location.reload();
+    }
+    
+    function query_strategy() {
+         n
     }
 </script>
 </body>

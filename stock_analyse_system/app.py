@@ -54,7 +54,7 @@ def filter_request():
         token = request.args.get("token")
         if (token == None):
             token = request.form.get("token")
-        if((token == None)  | (len(token) == 0)):
+        if(token == None):
             # return redirect("/auth/login")
             return render_template("login.html")
         else:

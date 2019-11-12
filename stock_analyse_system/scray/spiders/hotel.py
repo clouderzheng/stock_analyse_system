@@ -43,6 +43,7 @@ class HotelSpider(scrapy.Spider):
         try:
             strategy_service.call_back_support_stock(data)
             strategy_service.get_up_wave(data)
+            strategy_service.get_average_bond(data)
         except Exception as e:
             traceback.print_exc()
         pass
