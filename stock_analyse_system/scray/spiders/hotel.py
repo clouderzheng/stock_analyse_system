@@ -5,6 +5,7 @@ import json
 from python.util import date_time_util
 from scrapy.http import Request
 import traceback
+from python.redis import redis_pool
 
 class HotelSpider(scrapy.Spider):
     header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0'}  # 设置浏览器用户代理
@@ -17,6 +18,7 @@ class HotelSpider(scrapy.Spider):
         self.index = -1
         self.template = crawl_html_url.snow_ball_single_stock_info_url
         self.timestamp = date_time_util.get_timestamp_mill_second()
+        self.redis = redis_pool.RedisPool()
     #     # self.start_urls = [crawl_html_url.snow_ball_main_url,'https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SZ300272&begin=1571063050000&period=day&type=before&count=-60&indicator=kline','https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SZ300273&begin=1571063050000&period=day&type=before&count=-60&indicator=kline']
     #     self.start_urls = [crawl_html_url.snow_ball_main_url,'https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SZ300272&begin=1571062931000&period=day&type=before&count=-60&indicator=kline']        #     self.start_urls.append(crawl_html_url.snow_ball_single_stock_info_url.format(stock['area_stock_code'],date_time_util.get_timestamp_mill_second(),-60))
     #     print(self.start_urls)
@@ -40,10 +42,13 @@ class HotelSpider(scrapy.Spider):
         data = json.loads(response.text)
         if (len(data["data"]["item"]) < 60):
             return
-        try:
-            strategy_service.call_back_support_stock(data)
-            strategy_service.get_up_wave(data)
-            strategy_service.get_average_bond(data)
-        except Exception as e:
-            traceback.print_exc()
-        pass
+
+        """"这里修改逻辑为 缓存在redis"""
+        self.redis.setString(data['data']['symbol'],data)
+        # try:
+        #     strategy_service.call_back_support_stock(data)
+        #     strategy_service.get_up_wave(data)
+        #     strategy_service.get_average_bond(data)
+        # except Exception as e:
+        #     traceback.print_exc()
+        # pass
