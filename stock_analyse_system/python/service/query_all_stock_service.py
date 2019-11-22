@@ -12,6 +12,5 @@ def query_stock():
     # execute(['scrapy', 'crawl', 'hotel'])
     # _thread.start_new_thread(execute(['scrapy', 'crawl', 'hotel']),())
     # 模拟 自我请求 触发定时任务爬虫  爬虫不能在定时任务中运行
-    data = requests.get("http://localhost:9112/spider/get_every_signal")
-    print(data.text)
+    data = requests.get("http://localhost:9116/spider/get_every_signal")
     # subprocess.check_output(execute(['scrapy', 'crawl', 'hotel']))

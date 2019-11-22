@@ -10,4 +10,4 @@ def calculate_average(items,days):
 
 """计算当前价格与参考价格的相差差 百分比 乘以100"""
 def calculate_rate(currentPrice,referencePrice):
-    return abs(round(((currentPrice - referencePrice) / referencePrice ) * 100 ,2))
+    return abs(round(((referencePrice - currentPrice  ) / currentPrice ) * 100 ,2))

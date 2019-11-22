@@ -43,12 +43,13 @@ class HotelSpider(scrapy.Spider):
         if (len(data["data"]["item"]) < 60):
             return
 
-        """"这里修改逻辑为 缓存在redis"""
-        self.redis.setString(data['data']['symbol'],data)
-        # try:
-        #     strategy_service.call_back_support_stock(data)
-        #     strategy_service.get_up_wave(data)
-        #     strategy_service.get_average_bond(data)
-        # except Exception as e:
-        #     traceback.print_exc()
-        # pass
+        try:
+            """"这里缓存在redis"""
+            self.redis.hset("stock",data['data']['symbol'],str(data))
+            # self.redis.setString(data['data']['symbol'],data)
+            strategy_service.call_back_support_stock(data)
+            strategy_service.get_up_wave(data)
+            strategy_service.get_average_bond(data)
+        except Exception as e:
+            traceback.print_exc()
+        pass

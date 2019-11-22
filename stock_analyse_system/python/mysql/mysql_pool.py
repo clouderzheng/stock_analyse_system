@@ -16,8 +16,3 @@ class sql_pool():
 
     def close_connection(self,con):
         con.close()
-# pool = sql_pool()
-# con = pool.get_connection()
-# cursor = con.cursor()
-# cursor.execute("insert into txt (date) values %")
-# print(cursor.fetchone())

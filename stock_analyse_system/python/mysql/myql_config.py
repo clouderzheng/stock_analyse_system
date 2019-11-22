@@ -5,7 +5,7 @@ DBPORT = 3306
 DBUSER = "root"
 # DBPWD = "123456789"
 DBPWD = "111"
-DBNAME = "trade_system"
+DBNAME = "stock_trade"
 DBCHAR = "utf8mb4"
 
 # 聚宽账号信息

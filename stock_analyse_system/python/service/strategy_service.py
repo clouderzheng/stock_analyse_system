@@ -59,7 +59,7 @@ def call_back_support_stock(data):
         #               "last_high_day": last_high_day, \
         #               "stock_name": stock["stock_name"], "area_stock_code": stock["area_stock_code"],
         #               "percent": round(percent * 100, 2)}
-        stock_info = ('',data['data']['symbol'],current_new_price,current_percent,3)
+        stock_info = ['',data['data']['symbol'],current_new_price,current_percent,3]
         snow_ball_service.save_strategy_stock_info(stock_info)
 
 
@@ -69,9 +69,9 @@ def call_back_support_stock(data):
 """
 def get_up_wave(data):
     """回溯天数"""
-    call_back_day = 10
+    call_back_day = 15
     """容错天数"""
-    fault_day = 2
+    fault_day = 3
 
     """计算5日线回溯天数"""
     five_average_day = call_back_day + 5
@@ -97,7 +97,7 @@ def get_up_wave(data):
     """最终容错日大于-1  证明该股票符合策略"""
     if( fault_day > -1):
         current_day_data = items[-1]
-        stock_info = ('', data['data']['symbol'], current_day_data[5], current_day_data[7], 4)
+        stock_info = ['', data['data']['symbol'], current_day_data[5], current_day_data[7], 4]
         snow_ball_service.save_strategy_stock_info(stock_info)
 
 """
@@ -106,25 +106,27 @@ def get_up_wave(data):
 """
 def get_average_bond(data):
 
-    rate = 1
+    # 参数 偏移百分比  均线价格与当前价格的偏差 单位 百分
+    float_per = 1
     items = data["data"]["item"]
-
     current_data = items[-1]
     #计算5日均线
     five_price = calculate_util.calculate_average(items,5)
+
+    # 计算5日价格与当前价格的相差百分比
     five_diff_rate = calculate_util.calculate_rate(current_data[5],five_price)
     # 判断 5日均线与当前价格差率是否在范围内
-    if(five_diff_rate > rate):
+    if(five_diff_rate > float_per):
         return
     ten_price = calculate_util.calculate_average(items,10)
     ten_diff_rate = calculate_util.calculate_rate(current_data[5],ten_price)
-    if(ten_diff_rate > rate):
+    if(ten_diff_rate > float_per):
         return
     twenty_price = calculate_util.calculate_average(items,20)
     twenty_diff_rate = calculate_util.calculate_rate(current_data[5],twenty_price)
-    if(twenty_diff_rate > rate):
+    if(twenty_diff_rate > float_per):
         return
-    stock_info = ('', data['data']['symbol'], current_data[5], current_data[7], 5)
+    stock_info = ['', data['data']['symbol'], current_data[5], current_data[7], 5]
     snow_ball_service.save_strategy_stock_info(stock_info)
 # array = [1,2,3,4,5,6]
 # print(array[-1])
@@ -132,14 +134,3 @@ def get_average_bond(data):
 #     print(i)
 
 
-# import requests
-# from python.service import crawl_html_url
-# import json
-# headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
-#                          'Chrome/51.0.2704.63 Safari/537.36'}
-# session = requests.session()
-# session.get(crawl_html_url.snow_ball_main_url, headers=headers)
-# """获取真正有效数据"""
-# html_data = session.get("https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SH600376&begin=1573285956000&period=day&type=before&count=-60&indicator=kline", headers=headers)
-# data = json.loads(html_data.text)
-# get_average_bond(data)

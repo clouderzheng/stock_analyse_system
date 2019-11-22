@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+ <script src="/static/js/jquery.min.js"></script>
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table-locale-all.min.js"></script>
+</head>
+<body>
+ <select class="form-control" id="locale"></select>
+<table id="table" data-locale="zh-CN"  data-pagination="true" data-url="https://examples.wenzhixin.net.cn/examples/bootstrap_table/data">
+</table>
+
+<script>
+  var $table = $('#table')
+  function initTable() {
+    $table.bootstrapTable('destroy').bootstrapTable({
+      height: 550,
+      columns: [
+        [{
+          title: 'Item ID',
+          field: 'id',
+          sortable: true,
+
+        },{
+          field: 'name',
+          title: 'Item Name',
+          sortable: true,
+          align: 'center'
+        }, {
+          field: 'price',
+          title: 'Item Price',
+          sortable: true,
+          align: 'center',
+
+        }]
+      ]
+    })
+
+  }
+  $(function() {
+      initTable()
+  })
+</script>
+ </body>
+</html>

@@ -50,7 +50,7 @@ def get_stock_position_combination(begin_time = date_time_util.get_date_time(-1)
                         result[stock_name] = bean
                     else:
                         bean.count = bean.stock_count + 1
-                    stock_info = (postion["stock_name"], postion["stock_symbol"], postion["price"], 0,2)
+                    stock_info = [postion["stock_name"], postion["stock_symbol"], postion["price"], 0,2]
                     save_strategy_stock_info(stock_info)
 
     return result
@@ -80,24 +80,30 @@ def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
         if(percent > min_gain and percent < max_gain):
             result.append(stock)
             #持久化数据到mysql
-            stock_info = (stock["name"], stock["symbol"], stock["current"], stock["percent"], 1)
+            stock_info = [stock["name"], stock["symbol"], stock["current"], stock["percent"], 1]
             save_strategy_stock_info(stock_info)
     return result
 
 
-"""持久化策略数据"""
+"""持久化策略数据
+这里优化下 逻辑 
+多条策略的数据合并为一条
+code与date组合唯一索引  有更新添加策略
+"""
 def save_strategy_stock_info(stock_info):
     # stock_info = (stock["name"],stock["symbol"],stock["current"],stock["percent"],stock["symbol"],time.time(),time.time(),1)
-    sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,strategy_category ) \
-          value (%s,%s,%s,%s,%s) "
+    strategy_id = str(stock_info[4])+","
+    stock_info[4] = ","+strategy_id
+    stock_info.append(date_time_util.get_date(0))
+    sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,strategy_category ,create_date) \
+          value (%s,%s,%s,%s,%s,%s)  ON DUPLICATE KEY UPDATE  strategy_category = CONCAT(strategy_category,'"+strategy_id+"');"
     con = sql_pool().get_connection()
     cursor = con.cursor()
-    cursor.execute(sql, stock_info)
+    cursor.execute(sql, tuple(stock_info))
     cursor.connection.commit()
     con.close()
 
-# stock_info = ("光大银行","SH601818",4.09,3.81,datetime.datetime.today(),datetime.datetime.today(),1)
-# save_strategy_stock_info(stock_info)
+
 """获取回调到支撑位的股票"""
 def get_call_back_support_stock(call_back_day = 60,exclude_day = 20,float_per = 2):
     # 获取所有股票
@@ -162,8 +168,8 @@ def get_stock_last_info():
     # 判断本地与 最新股票数量是否相等 不相等删除原信息 重新 插入
     if(local_count != last_count):
         # 删除原信息
-        stock_service.delete_stock()
-        html = session.get(crawl_html_url.snow_ball_stock_all_info.format(last_count), headers=headers)
+        # stock_service.delete_stock()
+        html = session.get(crawl_html_url.snow_ball_stock_all_info.format(last_count - local_count), headers=headers)
         data_list = json.loads(html.text)['data']['list']
         stock_list = []
         """更新最新信息到数据库"""

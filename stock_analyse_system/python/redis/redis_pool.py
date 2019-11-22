@@ -19,10 +19,20 @@ class RedisPool():
     def delString(self,key):
         return self.service.delete(key)
 
+    """map存储"""
+    def hset(self,name,key,value):
+        return self.service.hset(name,key,value);
 
+    """map单个删除"""
+    def hdel(selef,name,key):
+        return selef.service.hdel(name,key)
 
 # redis =  RedisPool()
-# print(redis.setString("age","25"))
+# print(redis.hset("student","night","good"))
+# print(redis.hset("student","tom","not bad"))
+# print(redis.hset("student","jim"," bad"))
+# print(redis.hdel("student","jim"))
+
 # print(redis.getString("age"))
 # print(redis.setString("address","四川"))
 # print(redis.getString("address"))
