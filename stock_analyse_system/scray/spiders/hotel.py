@@ -5,7 +5,7 @@ import json
 from python.util import date_time_util
 from scrapy.http import Request
 import traceback
-from python.redis import redis_pool
+from python.redis import redis_pool,redis_key_constants
 
 class HotelSpider(scrapy.Spider):
     header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0'}  # 设置浏览器用户代理
@@ -44,8 +44,8 @@ class HotelSpider(scrapy.Spider):
             return
 
         try:
-            """"这里缓存在redis"""
-            self.redis.hset("stock",data['data']['symbol'],str(data))
+            """"这里缓存在当天数据在redis"""
+            self.redis.hset(redis_key_constants.current_day_stock_map,data['data']['symbol'],str(data["data"]["item"][-1]))
             # self.redis.setString(data['data']['symbol'],data)
             strategy_service.call_back_support_stock(data)
             strategy_service.get_up_wave(data)

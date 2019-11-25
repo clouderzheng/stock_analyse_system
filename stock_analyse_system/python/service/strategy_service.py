@@ -1,11 +1,5 @@
-from python.service import snow_ball_service
 from python.util import  calculate_util
-"""
-测试实现方法
-"""
-
-
-
+from python.dao import stock_strategy_dao
 
 """回调支撑方法
 原理：股票到达高点之后开始回调 落到前一个高点会获得支撑
@@ -30,14 +24,16 @@ def call_back_support_stock(data):
     """查询结果小于回溯天数 可能是新股 跳过"""
     if (len(items) < call_back_day):
         return
+
+    current_day_data = items[-1]
     # 获取此时最低价
-    current_low_price = items[call_back_day - 1][4]
+    current_low_price = current_day_data[4]
     # 获取此时最新报价
-    current_new_price = items[call_back_day - 1][5]
+    current_new_price = current_day_data[5]
     # 获取此时最低价时间
-    current_low_day = items[call_back_day - 1][0]
+    current_low_day = current_day_data[0]
     # 获取此时波动幅度
-    current_percent = items[call_back_day - 1][7]
+    current_percent = current_day_data[7]
 
 
     # 获取上个高点周期数据
@@ -54,13 +50,7 @@ def call_back_support_stock(data):
     percent = abs(round(percent * 100))
     # 判断计算结果是否在指定区间内
     if (percent < float_per):
-        # stock_info = {"current_new_price": current_new_price, "current_low_price": current_low_price,
-        #               "current_low_day": current_low_day, "last_high_price": last_high_price,
-        #               "last_high_day": last_high_day, \
-        #               "stock_name": stock["stock_name"], "area_stock_code": stock["area_stock_code"],
-        #               "percent": round(percent * 100, 2)}
-        stock_info = ['',data['data']['symbol'],current_new_price,current_percent,3]
-        snow_ball_service.save_strategy_stock_info(stock_info)
+        stock_strategy_dao.stock_strategy().save_strategy_choose(items[call_back_day - 1],data['data']['symbol'],3)
 
 
 """获取主升浪形态股票 
@@ -79,8 +69,6 @@ def get_up_wave(data):
     """获取最近5日数据"""
     item_ = data["data"]["item"]
     items = item_[-five_average_day:]
-
-
     for index in range(call_back_day):
         """获取当天收盘价 多了5天计算平均值 所有位移5位 """
         current_day_close_price = items[index + 5][5]
@@ -97,9 +85,7 @@ def get_up_wave(data):
     """最终容错日大于-1  证明该股票符合策略"""
     if( fault_day > -1):
         current_day_data = items[-1]
-        stock_info = ['', data['data']['symbol'], current_day_data[5], current_day_data[7], 4]
-        snow_ball_service.save_strategy_stock_info(stock_info)
-
+        stock_strategy_dao.stock_strategy().save_strategy_choose(current_day_data, data['data']['symbol'], 4)
 """
 均线粘合策略  5日线  10日线 20日线 挤在一起获得支撑
 参数 ： 相差费率  均线粘合之间的空隙 
@@ -126,11 +112,8 @@ def get_average_bond(data):
     twenty_diff_rate = calculate_util.calculate_rate(current_data[5],twenty_price)
     if(twenty_diff_rate > float_per):
         return
-    stock_info = ['', data['data']['symbol'], current_data[5], current_data[7], 5]
-    snow_ball_service.save_strategy_stock_info(stock_info)
-# array = [1,2,3,4,5,6]
-# print(array[-1])
-# for i in range(10,15):
-#     print(i)
+
+    """保存信息到策略记录表"""
+    stock_strategy_dao.stock_strategy().save_strategy_choose(current_data, data['data']['symbol'], 4)
 
 

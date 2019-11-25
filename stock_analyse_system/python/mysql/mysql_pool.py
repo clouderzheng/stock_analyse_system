@@ -16,3 +16,29 @@ class sql_pool():
 
     def close_connection(self,con):
         con.close()
+
+    """插入信息"""
+    def insert(self,sql,param):
+        con = self.get_connection()
+        cursor = con.cursor()
+        cursor.execute(sql, tuple(param))
+        cursor.connection.commit()
+        con.close()
+
+    """单个查询"""
+    def selectOne(self,sql,param):
+        con = self.get_connection()
+        cursor = con.cursor()
+        cursor.execute(sql, param)
+        return cursor.fetchone()
+
+    """多个查询"""
+    def selectMany(self,sql,param = None):
+        con = self.get_connection()
+        cursor = con.cursor()
+
+        if param == None:
+            cursor.execute(sql)
+        else:
+            cursor.execute(sql, param)
+        return cursor.fetchall()

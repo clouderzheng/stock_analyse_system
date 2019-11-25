@@ -1,47 +1,68 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+* {
+	margin: 0;
+	padding: 0;
+}
+.main {
+	margin: 0 auto;
+	padding: 50px 0;
+	width: 100%;
+	min-height: 100;
+}
+table {
+	margin-bottom: 20px;
+	width: 100%;
+	border-collapse: collapse;
+	border: none;
+}
+table th, table td {
+	padding: 5px 10px;
+	border-color: #999;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/static/css/MyPaging.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
  <script src="/static/js/jquery.min.js"></script>
-        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
-    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table-locale-all.min.js"></script>
+
 </head>
 <body>
- <select class="form-control" id="locale"></select>
-<table id="table" data-locale="zh-CN"  data-pagination="true" data-url="https://examples.wenzhixin.net.cn/examples/bootstrap_table/data">
-</table>
+<div class="main " >
 
-<script>
-  var $table = $('#table')
-  function initTable() {
-    $table.bootstrapTable('destroy').bootstrapTable({
-      height: 550,
-      columns: [
-        [{
-          title: 'Item ID',
-          field: 'id',
-          sortable: true,
+	<table border class="table table-hover">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>姓名</th>
+				<th>年龄</th>
+			</tr>
+{#			<tr>#}
+{#				<th>股票代码</th>#}
+{#				<th>股票名称</th>#}
+{#				<th>入选日期</th>#}
+{#				<th>入选价格</th>#}
+{#				<th>跟踪第一天</th>#}
+{#				<th>跟踪第二天</th>#}
+{#				<th>跟踪第三天</th>#}
+{#				<th>跟踪第四天</th>#}
+{#				<th>跟踪第五天</th>#}
+{#			</tr>#}
+		</thead>
+		<tbody class="tbody">
+			<tr>
+				<td>1</td>
+				<td>会计师看到</td>
+				<td>50</td>
+			</tr>
+		</tbody>
+	</table>
 
-        },{
-          field: 'name',
-          title: 'Item Name',
-          sortable: true,
-          align: 'center'
-        }, {
-          field: 'price',
-          title: 'Item Price',
-          sortable: true,
-          align: 'center',
-
-        }]
-      ]
-    })
-
-  }
-  $(function() {
-      initTable()
-  })
-</script>
+	<div class="box2"></div>
+</div>
+ <script src="/static/js/MyPaging.js"></script>
+ <script src="/static/js/script.js"></script>
  </body>
 </html>

@@ -16,3 +16,26 @@ def get_date_time_line(interval):
 """获取毫秒时间戳"""
 def get_timestamp_mill_second():
     return int(time.time()) * 1000
+
+"""获取基于当前日期的前几个工作日的日期"""
+def get_work_date(interval):
+    # 往前追溯时间索引
+    current_index = -1
+    # 获取当天时间
+    current_day = datetime.datetime.today()
+    last_day = None
+    for index in range(7):
+        # 获取追溯日期
+        last_day = current_day + datetime.timedelta(current_index)
+        # 追溯日期索引减1
+        current_index = current_index - 1
+        # 计算当天是星期几
+        week_day  = last_day.weekday()
+        # 不是休息日 追溯日期减一
+        if(week_day < 6):
+            interval = interval -1
+        # 追溯日期小于1  结束
+        if(interval < 0):
+            break
+    return last_day.strftime("%Y-%m-%d")
+

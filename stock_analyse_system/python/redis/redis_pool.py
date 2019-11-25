@@ -26,6 +26,9 @@ class RedisPool():
     """map单个删除"""
     def hdel(selef,name,key):
         return selef.service.hdel(name,key)
+    """map获取单个"""
+    def hget(self,name,key):
+        return self.service.hget(name,key)
 
 # redis =  RedisPool()
 # print(redis.hset("student","night","good"))

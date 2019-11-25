@@ -1,6 +1,8 @@
 from python.service import snow_ball_service
 from python.mysql import  mysql_pool
-
+from python.util import date_time_util
+import datetime
+from python.dao import stock_strategy_dao
 """测试爬取雪球数据"""
 # import requests
 # from python.service import crawl_html_url
@@ -26,3 +28,11 @@ from python.mysql import  mysql_pool
 # cursor.execute("select * from trade_strategy_mapping where id = 1")
 # fetchone = cursor.fetchone()
 # print(fetchone)
+
+"""测试获取5日前日期"""
+# print(date_time_util.get_date(-5))
+# print(datetime.datetime.now().weekday())
+
+"""测试获取策略选中表"""
+# data = stock_strategy_dao.stock_strategy().get_strategy_stock(1,20)
+# print(data)

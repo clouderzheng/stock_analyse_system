@@ -38,11 +38,3 @@ def add_stock_list(stock_list):
     """判断是否条件查询"""
     cursor.executemany(sql,stock_list)
     con.commit()
-# info = get_stock_info("STXL")
-# for key in info:
-#     print(key["stock_name"])
-
-# stock_list = []
-# stock_list.append(("fasd","fad","fasdfa"))
-# # stock_list.append(("fas1d","fa1d","fas1dfa"))
-# add_stock_list(stock_list)

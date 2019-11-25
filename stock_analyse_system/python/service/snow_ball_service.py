@@ -4,9 +4,10 @@ import json
 import time
 from python.domain import snow_ball_bean
 from python.service import stock_service
-from python.mysql.mysql_pool import  sql_pool
 from python.util import get_characters_letters,date_time_util
 import logging
+from python.redis import redis_pool,redis_key_constants
+from python.dao import stock_strategy_dao
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                          'Chrome/51.0.2704.63 Safari/537.36'}
@@ -51,20 +52,17 @@ def get_stock_position_combination(begin_time = date_time_util.get_date_time(-1)
                     else:
                         bean.count = bean.stock_count + 1
                     stock_info = [postion["stock_name"], postion["stock_symbol"], postion["price"], 0,2]
-                    save_strategy_stock_info(stock_info)
+                    stock_strategy_dao.stock_strategy().save_other_strategy_choose(stock_info)
 
     return result
 """获取早盘竞价信息"""
 def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
-
-
     session = requests.session()
     session.get(crawl_html_url.snow_ball_main_url, headers=headers)
     html_data = session.get(crawl_html_url.snow_ball_stock_info_url.format(4000), headers=headers)
     data = json.loads(html_data.text)
     stock_list = data["data"]["list"]
     result = []
-
     sort_array = []
     """去除停盘的 停盘的没有交易量 无法比较"""
     for stock  in stock_list:
@@ -81,77 +79,8 @@ def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
             result.append(stock)
             #持久化数据到mysql
             stock_info = [stock["name"], stock["symbol"], stock["current"], stock["percent"], 1]
-            save_strategy_stock_info(stock_info)
+            stock_strategy_dao.stock_strategy().save_other_strategy_choose(stock_info)
     return result
-
-
-"""持久化策略数据
-这里优化下 逻辑 
-多条策略的数据合并为一条
-code与date组合唯一索引  有更新添加策略
-"""
-def save_strategy_stock_info(stock_info):
-    # stock_info = (stock["name"],stock["symbol"],stock["current"],stock["percent"],stock["symbol"],time.time(),time.time(),1)
-    strategy_id = str(stock_info[4])+","
-    stock_info[4] = ","+strategy_id
-    stock_info.append(date_time_util.get_date(0))
-    sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,strategy_category ,create_date) \
-          value (%s,%s,%s,%s,%s,%s)  ON DUPLICATE KEY UPDATE  strategy_category = CONCAT(strategy_category,'"+strategy_id+"');"
-    con = sql_pool().get_connection()
-    cursor = con.cursor()
-    cursor.execute(sql, tuple(stock_info))
-    cursor.connection.commit()
-    con.close()
-
-
-"""获取回调到支撑位的股票"""
-def get_call_back_support_stock(call_back_day = 60,exclude_day = 20,float_per = 2):
-    # 获取所有股票
-    stock_list = stock_service.get_stock_info()
-
-    # 获取此时时间
-    current_time = int(time.time() * 1000)
-
-
-    stock_array = []
-    for stock in stock_list:
-        try:
-            session = requests.session()
-            session.get(crawl_html_url.snow_ball_main_url, headers=headers)
-            html_data = session.get(crawl_html_url.snow_ball_single_stock_info_url.format(stock["area_stock_code"],current_time,call_back_day), headers=headers)
-            data = json.loads(html_data.text)
-            items = data["data"]["item"]
-
-            """查询结果小于回溯天数 可能是新股 跳过"""
-            if(len(items) < call_back_day):
-                continue
-            #获取此时最低价
-            current_low_price = items[call_back_day - 1][4]
-            #获取此时最新报价
-            current_new_price = items[call_back_day - 1][5]
-            # 获取此时最低价时间
-            current_low_day = items[call_back_day - 1][0]
-
-            # 将排除之后的日期根据最高价排序
-            last_days = items[:(call_back_day - exclude_day)]
-            sorts_list = sorted(last_days, key=lambda x: x[3], reverse=True)
-            # 获取上个高点价格
-            last_high_price = sorts_list[0][3]
-            # 获取上个高点时间
-            last_high_day = sorts_list[0][0]
-
-            # 计算两个价格之间的相差波动率
-            percent = (current_low_price - last_high_price)/ last_high_day
-            # 判断计算结果是否在指定区间内
-            if(percent < float_per):
-                stock_info = {"current_new_price" : current_new_price,"current_low_price" : current_low_price,"current_low_day":current_low_day,"last_high_price":last_high_price,"last_high_day":last_high_day,\
-                              "stock_name":stock["stock_name"],"area_stock_code":stock["area_stock_code"],"percent":round(percent * 100,2)}
-
-                stock_array.append(stock_info)
-        except Exception:
-            print(stock)
-    return stock_array
-
 
 """获取最新股票信息 判断是否需要更新数据库存储"""
 def get_stock_last_info():
@@ -166,47 +95,19 @@ def get_stock_last_info():
     local_count = stock_service.get_stock_count()
 
     # 判断本地与 最新股票数量是否相等 不相等删除原信息 重新 插入
+
     if(local_count != last_count):
         # 删除原信息
         # stock_service.delete_stock()
         html = session.get(crawl_html_url.snow_ball_stock_all_info.format(last_count - local_count), headers=headers)
         data_list = json.loads(html.text)['data']['list']
         stock_list = []
+
+        redis = redis_pool.RedisPool()
         """更新最新信息到数据库"""
         for stock in data_list:
             stock_list.append((stock['name'],stock['symbol'],stock['symbol'][2:],get_characters_letters.getPinyin(stock['name'])))
+            """保存股票代码与名称到redis"""
+            redis.hset(redis_key_constants.stock_name_code_mapping,stock['symbol'],stock['name'])
         stock_service.add_stock_list(stock_list)
 
-# get_stock_last_info()
-
-# list = get_biding_info(30,4,2)
-# for stock in list:
-#     print(stock["name"])
-# combination = get_stock_position_combination("2019-09-05 00:15:23", "2019-09-06 14:15:23", total=60)
-# for key in combination:
-#     print(key,":",combination[key].stock_name,combination[key].stock_code,combination[key].stock_count,)
-#
-# import time
-# current = int(time.time())
-#
-# print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(current)))
-#
-# current = current - 60 * 60 * 24 * 5
-# print(current)
-# print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(current)))
-
-# session = requests.session()
-# session.get(crawl_html_url.snow_ball_main_url, headers=headers)
-# html_data = session.get("https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SZ300085&begin=1569310406000&period=day&type=before&count=-60&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance", headers=headers)
-# data = json.loads(html_data.text)
-# items = data["data"]["item"]
-# current_low_price = items[60 - 1][4]
-# print(current_low_price)
-# last_days = items[:(60 - 20)]
-#
-# print(last_days)
-# sorts_list = sorted(last_days, key=lambda x: x[3], reverse=True)
-# print(sorts_list)
-
-# result = {"name":"night","age":25}
-# print(result.get("name1"))
