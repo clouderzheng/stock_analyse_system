@@ -47,7 +47,7 @@ $('.box2').MyPaging({
             $.ajax({
                 url: "/analyse/query",
                 type: "get",
-                data: {"page": _this.current, "limit": _this.size, "strategy_ids": strategy_id, "token": token},
+                data: {"page": _this.current, "limit": _this.size, "strategy_ids": sessionStorage.getItem('strategy_id'), "token": token},
                 success: function (res) {
                     if (res.code == '0000') {
                         setTbody(res.data);
@@ -56,6 +56,9 @@ $('.box2').MyPaging({
                         setTbody([]);
                         _this.setTotal(0);
                     }
+                },
+                error : function () {
+                    alert("出错了，请联系技术人员")
                 }
             });
         }, 100);
