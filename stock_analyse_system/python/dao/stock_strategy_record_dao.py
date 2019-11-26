@@ -9,7 +9,7 @@ class stock_strategy_record:
         self.mysqlService = mysql_pool.sql_pool()
         self.redis = redis_pool.RedisPool()
 
-    """插叙跟踪记录"""
+    """插入跟踪记录"""
     def save_stock_strategy_record(self,stock_code,data):
         record = []
         record.append(stock_code)
@@ -20,11 +20,15 @@ class stock_strategy_record:
         record.append(data[4])
         record.append(data[5])
         record.append(data[7])
-        sql = "insert into trade_strategy_track_record (area_stock_code,stock_name,current_date,open_price,high_price,low_price,close_price,close_rate) \
+        sql = "insert into trade_strategy_track_record (area_stock_code,stock_name,`current_date`,open_price,high_price,low_price,close_price,close_rate) \
                value (%s,%s,%s,%s,%s,%s,%s,%s) "
         self.mysqlService.insert(sql,record)
 
-    """查询在指定日期内需要跟踪的股票"""
-    def get_stock_track(self,param):
-        sql = "SELECT * from trade_strategy_record  GROUP BY stock_code WHERE create_date > %s and  create_date < %s GROUP BY stock_code"
+    """获取跟踪时间内股票信息"""
+    def get_track_stock_by_date(self,stock_code,begin_date,end_date):
+        param = []
+        param.append(stock_code)
+        param.append(begin_date)
+        param.append(end_date)
+        sql = "select * from trade_strategy_track_record where area_stock_code = %s and  `current_date` > %s and  `current_date` < %s  ORDER BY `current_date` "
         return self.mysqlService.selectMany(sql,param)

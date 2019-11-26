@@ -4,7 +4,7 @@ from python.system import auth,home_index,snow_ball,sina_comment,spider_signal
 from flask_script import Manager
 from apscheduler.schedulers.background import BackgroundScheduler
 from python.service import snow_ball_service,query_all_stock_service
-from python.util import logger_util
+from python.util import logger_util,personal_encoder
 from python.controller import strategy_analyse_controller
 
 app = Flask(__name__)
@@ -20,6 +20,7 @@ app.register_blueprint(strategy_analyse_controller.blueprint)
 app.jinja_env.auto_reload = True
 app.secret_key = "123"
 app.config['SESSION_TYPE'] = 'filesystem'
+app.json_encoder = personal_encoder.personal_encoder
 # app.config['SECRET_KEY'] = '123'
 
 logger_util.logger_init()
@@ -42,7 +43,6 @@ scheduler.add_job(query_all_stock_service.query_stock, 'cron', hour=12,minute=2)
 manager = Manager(app)
 scheduler.start()
 if __name__ == '__main__':
-
 
     app.run(host = '0.0.0.0' ,port = 9112)
     manager.run()

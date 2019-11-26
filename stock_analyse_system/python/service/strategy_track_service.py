@@ -1,5 +1,5 @@
 from python.util import date_time_util
-from python.dao import stock_strategy_record_dao,log_dao
+from python.dao import stock_strategy_record_dao,log_dao,stock_strategy_dao
 from python.redis import redis_pool,redis_key_constants
 
 """策略选股跟踪处理类"""
@@ -18,8 +18,9 @@ class strategy_track():
         param.append(begin_date)
         param.append(end_date)
         stock_strategy_record = stock_strategy_record_dao.stock_strategy_record()
+        stock_strategy = stock_strategy_dao.stock_strategy()
         # 查询需要追溯时间内的所有股票
-        track_stock_list = stock_strategy_record.get_stock_track(param)
+        track_stock_list = stock_strategy.get_stock_track(param)
         # 遍历追溯股票
         for stock in track_stock_list:
             stock_code = stock['stock_code']

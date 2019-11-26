@@ -1,4 +1,4 @@
-from python.service import snow_ball_service
+from python.service import snow_ball_service,strategy_analyse_service
 from python.mysql import  mysql_pool
 from python.util import date_time_util
 import datetime
@@ -34,5 +34,15 @@ from python.dao import stock_strategy_dao
 # print(datetime.datetime.now().weekday())
 
 """测试获取策略选中表"""
-# data = stock_strategy_dao.stock_strategy().get_strategy_stock(1,20)
+# data = stock_strategy_dao.stock_strategy().get_strategy_stock(1,1)
 # print(data)
+# create_date = data[0]['create_date']
+# print(create_date+ datetime.timedelta(0))
+
+"""测试获取策略选中表总数"""
+# data = stock_strategy_dao.stock_strategy().get_strategy_count()
+# print(data)
+
+"""测试获取策略选股信息"""
+stock = strategy_analyse_service.strategy_analyse().get_strategy_stock(1, 1)
+print(stock[0])

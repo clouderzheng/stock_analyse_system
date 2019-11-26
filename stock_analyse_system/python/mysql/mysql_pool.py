@@ -26,10 +26,13 @@ class sql_pool():
         con.close()
 
     """单个查询"""
-    def selectOne(self,sql,param):
+    def selectOne(self,sql,param = None):
         con = self.get_connection()
         cursor = con.cursor()
-        cursor.execute(sql, param)
+        if param == None:
+          cursor.execute(sql)
+        else:
+          cursor.execute(sql, param)
         return cursor.fetchone()
 
     """多个查询"""

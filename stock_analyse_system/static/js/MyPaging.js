@@ -161,7 +161,7 @@
 			oLinkBtn.on('click', function () {
 				var oTag = $(this);
 				var current = oTag.data('current');
-				var to = _this.current;
+				var to = Number(_this.current);
 
 				if (current == 'prev') {
 					to = to > 1 ? to - 1 : 1;

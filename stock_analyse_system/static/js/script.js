@@ -1,68 +1,63 @@
-// 模拟后台接口
-function getData(params) {
-	var data = [
-		{id: 1, name: '小王', age: 10},
-		{id: 2, name: '当', age: 23},
-		{id: 3, name: '节点', age: 12},
-		{id: 4, name: '科二', age: 23},
-		{id: 5, name: '开心', age: 44},
-		{id: 6, name: '为', age: 12},
-		{id: 7, name: '看我', age: 22},
-		{id: 8, name: '看', age: 43},
-		{id: 9, name: '考虑', age: 15},
-		{id: 10, name: '为额', age: 18},
-		{id: 11, name: '熊', age: 32},
-		{id: 12, name: '下', age: 51},
-		{id: 13, name: '前往', age: 23},
-		{id: 14, name: '我去', age: 28},
-		{id: 15, name: '问', age: 36},
-		{id: 16, name: '跳', age: 46},
-		{id: 17, name: '欧文', age: 31}
-	]
-
-	// var start = (params.current - 1) * params.size;
-	// var end = params.current *params.size;
-	
-	return {
-		total: data.length,
-		list: data.splice( (params.current - 1) * params.size, params.size )
-	}
-}
-
 // 设置tbody的html
-function setTbody (arr) {
-	var html = '';
-	for (var i = 0; i < arr.length; i++) {
-		var item = arr[i];
-		html += '<tr><td>' + item.id + '</td><td>' + item.name + '</td><td>' + item.age + '</td></tr>';
-	}
-	$('.tbody').html(html);
+function setTbody(arr) {
+    var html = '';
+    for (var i = 0; i < arr.length; i++) {
+        var item = arr[i];
+        html += '<tr>'
+            + '<td>' + item.stock_code + '</td>'
+            + '<td>' + item.stock_name + '</td>'
+            + '<td>' + item.create_date + '</td>'
+            + '<td>' + item.current_rate + '</td>'
+            + '<td>' + item.current_price + '</td>';
+        detail_info = item.track_info;
+        var day = 0;
+        var choose_price = item.current_price;
+        for (var index in detail_info) {
+            track_price = detail_info[index].close_price
+            if (track_price > choose_price) {
+                html += '<td style="color: red">' + detail_info[index].close_price + '</td>';
+            } else {
+                html += '<td style="color: green">' + detail_info[index].close_price + '</td>';
+            }
+            day++;
+        }
+        while (day < 5) {
+            html += '<td>--</td>';
+            day++;
+        }
+        html += '</tr>';
+    }
+    $('.tbody').html(html);
 }
-
 
 
 // 初始化分页
 $('.box2').MyPaging({
-	size: 3,
-	total: 0,
-	current: 1,
-	prevHtml: '上一页',
-	nextHtml: '下一页',
-	layout: 'total, totalPage, prev, pager, next, jumper',
-	jump: function () {
-		var _this = this;
-
-		// 模拟ajax获取数据
-		setTimeout(function () {
-			var res = getData({
-				size: _this.size,
-				current: _this.current
-			})
-
-			setTbody(res.list);
-
-			// 必须调用
-			_this.setTotal(res.total);
-		}, 100);
-	}
+    size: 10,
+    total: 0,
+    current: 1,
+    prevHtml: '上一页',
+    nextHtml: '下一页',
+    layout: 'total, totalPage, prev, pager, next, jumper',
+    jump: function () {
+        var _this = this;
+        setTimeout(function () {
+            // 模拟ajax获取数据
+            var token = check_token();
+            $.ajax({
+                url: "/analyse/query",
+                type: "get",
+                data: {"page": _this.current, "limit": _this.size, "strategy_ids": strategy_id, "token": token},
+                success: function (res) {
+                    if (res.code == '0000') {
+                        setTbody(res.data);
+                        _this.setTotal(res.count);
+                    } else {
+                        setTbody([]);
+                        _this.setTotal(0);
+                    }
+                }
+            });
+        }, 100);
+    }
 });

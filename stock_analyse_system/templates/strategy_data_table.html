@@ -10,17 +10,26 @@
 	margin: 0 auto;
 	padding: 50px 0;
 	width: 100%;
-	min-height: 100;
+	min-height: 100%;
 }
 table {
 	margin-bottom: 20px;
 	width: 100%;
 	border-collapse: collapse;
 	border: none;
+    font-family: cursive;
+    font-size: 18px;
+    background-color: ivory;
+    border-top: solid black;
+
 }
 table th, table td {
-	padding: 5px 10px;
 	border-color: #999;
+    text-align: center;
+}
+thead {
+    color: #2611d4;
+    font-size: 18px;
 }
 </style>
 <link rel="stylesheet" type="text/css" href="/static/css/MyPaging.css">
@@ -34,35 +43,37 @@ table th, table td {
 
 	<table border class="table table-hover">
 		<thead>
-			<tr>
+			{#<tr>
 				<th>id</th>
 				<th>姓名</th>
 				<th>年龄</th>
+			</tr>#}
+			<tr>
+				<th>股票代码</th>
+				<th>股票名称</th>
+				<th>入选日期</th>
+                <th>入选日涨幅</th>
+				<th>入选价格</th>
+				<th>跟踪第一天</th>
+				<th>跟踪第二天</th>
+				<th>跟踪第三天</th>
+				<th>跟踪第四天</th>
+				<th>跟踪第五天</th>
 			</tr>
-{#			<tr>#}
-{#				<th>股票代码</th>#}
-{#				<th>股票名称</th>#}
-{#				<th>入选日期</th>#}
-{#				<th>入选价格</th>#}
-{#				<th>跟踪第一天</th>#}
-{#				<th>跟踪第二天</th>#}
-{#				<th>跟踪第三天</th>#}
-{#				<th>跟踪第四天</th>#}
-{#				<th>跟踪第五天</th>#}
-{#			</tr>#}
 		</thead>
 		<tbody class="tbody">
-			<tr>
-				<td>1</td>
-				<td>会计师看到</td>
-				<td>50</td>
-			</tr>
+
 		</tbody>
 	</table>
 
 	<div class="box2"></div>
 </div>
- <script src="/static/js/MyPaging.js"></script>
- <script src="/static/js/script.js"></script>
+<script>
+    var strategy_id = 2;
+
+</script>
+<script src="/static/js/night_echart.js"></script>
+<script src="/static/js/MyPaging.js"></script>
+<script src="/static/js/script.js"></script>
  </body>
 </html>

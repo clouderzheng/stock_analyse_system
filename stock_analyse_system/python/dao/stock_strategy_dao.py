@@ -19,14 +19,17 @@ class stock_strategy:
         stock_info.append("," + strategy_id)
         stock_info.append(date_time_util.get_date(0))
 
-        sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,strategy_category ,create_date) \
+        sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,strategy_category ,`create_date`) \
                  value (%s,%s,%s,%s,%s,%s)  ON DUPLICATE KEY UPDATE  strategy_category = CONCAT(strategy_category,'" + strategy_id + "');"
 
         self.mysqlService.insert(sql,stock_info )
         """保存数据到策略跟踪表"""
         stock_strategy_record_dao.stock_strategy_record().save_stock_strategy_record(stock_code,data)
 
-
+    """查询在指定日期内需要跟踪的股票"""
+    def get_stock_track(self, param):
+        sql = "SELECT * from trade_strategy_record  GROUP BY stock_code WHERE create_date > %s and  create_date < %s GROUP BY stock_code"
+        return self.mysqlService.selectMany(sql, param)
     """持久化策略数据
     这里优化下 逻辑 
     多条策略的数据合并为一条
@@ -36,7 +39,7 @@ class stock_strategy:
         strategy_id = str(stock_info[4]) + ","
         stock_info[4] = "," + strategy_id
         stock_info.append(date_time_util.get_date(0))
-        sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,strategy_category ,create_date) \
+        sql = "insert into trade_strategy_record (stock_name,stock_code,current_price,current_rate,strategy_category ,`create_date`) \
               value (%s,%s,%s,%s,%s,%s)  ON DUPLICATE KEY UPDATE  strategy_category = CONCAT(strategy_category,'" + strategy_id + "');"
         self.mysqlService.insert(sql, stock_info)
 
@@ -47,7 +50,17 @@ class stock_strategy:
 
         if strategy_ids != None:
             for strategy_id in strategy_ids:
-                sql = sql + " and strategy_category  like  %%," + str(strategy_id) +",%%"
+                sql = sql + " and strategy_category  like  '%%," + str(strategy_id) +",%%'  "
         sql = sql + " order by create_time desc limit "+ str(begin_index) + "," + str(limit)
         result = self.mysqlService.selectMany(sql)
+        return result
+
+    def get_strategy_count(self,strategy_ids = None):
+        sql = "select count(1) as count from trade_strategy_record  where 1 = 1"
+
+        if strategy_ids != None:
+            for strategy_id in strategy_ids:
+                sql = sql + " and strategy_category  like  '%%," + str(strategy_id) + ",%%'  "
+        sql = sql + " order by create_time desc  "
+        result = self.mysqlService.selectOne(sql)
         return result
