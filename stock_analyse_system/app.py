@@ -5,7 +5,7 @@ from flask_script import Manager
 from apscheduler.schedulers.background import BackgroundScheduler
 from python.service import snow_ball_service,query_all_stock_service
 from python.util import logger_util
-
+from python.controller import strategy_analyse_controller
 
 app = Flask(__name__)
 app.register_blueprint(auth.blueprint)
@@ -13,6 +13,8 @@ app.register_blueprint(home_index.blueprint)
 app.register_blueprint(snow_ball.blueprint)
 app.register_blueprint(sina_comment.blueprint)
 app.register_blueprint(spider_signal.blueprint)
+app.register_blueprint(strategy_analyse_controller.blueprint)
+
 
 
 app.jinja_env.auto_reload = True
