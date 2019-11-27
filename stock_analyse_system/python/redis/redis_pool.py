@@ -1,12 +1,12 @@
 import redis
-from python.mysql import myql_config
+from python.mysql import mysql_config
 
 """redis 连接池"""
 class RedisPool():
 
     """初始化redis连接"""
     def __init__(self):
-        pool = redis.ConnectionPool(host=myql_config.REDIS_HOST,port= 6379,password = myql_config.REDIS_PASSWORD,db=myql_config.REDIS_DB,decode_responses=True)
+        pool = redis.ConnectionPool(host=mysql_config.REDIS_HOST, port= 6379, password = mysql_config.REDIS_PASSWORD, db=mysql_config.REDIS_DB, decode_responses=True)
         self.service = redis.Redis(connection_pool=pool)
 
     """保存字符串"""

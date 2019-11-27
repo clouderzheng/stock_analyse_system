@@ -1,15 +1,15 @@
 import pymysql
 from DBUtils.PooledDB import PooledDB
 from pymysql.cursors import DictCursor
-from python.mysql import myql_config
+from python.mysql import mysql_config
 class sql_pool():
 
 
     def __init__(self):
       # self.pool = PooledDB(pymysql, 5, host='localhost', user='root', passwd='111', db='test', port=3306)  # 5为连接池里的最少连接数
       self.pool = PooledDB(pymysql, mincached = 1, maxcached = 20, \
-               host = myql_config.DBHOST, port = myql_config.DBPORT, user = myql_config.DBUSER, passwd = myql_config.DBPWD, \
-                      db =myql_config.DBNAME, use_unicode = True, charset = myql_config.DBCHAR, cursorclass = DictCursor)
+                           host = mysql_config.DBHOST, port = mysql_config.DBPORT, user = mysql_config.DBUSER, passwd = mysql_config.DBPWD, \
+                           db =mysql_config.DBNAME, use_unicode = True, charset = mysql_config.DBCHAR, cursorclass = DictCursor)
 
     def get_connection(self):
         return self.pool.connection()
