@@ -12,6 +12,10 @@ class RedisPool():
     """保存字符串"""
     def setString(self,key,value):
         return self.service.set(key,value)
+
+    """设置字符串过期时间"""
+    def setStringExpire(self,key,value,second):
+        return self.service.setex(key,second,value)
     """获取字符串"""
     def getString(self,key):
         return self.service.get(key)
@@ -30,15 +34,4 @@ class RedisPool():
     def hget(self,name,key):
         return self.service.hget(name,key)
 
-# redis =  RedisPool()
-# print(redis.hset("student","night","good"))
-# print(redis.hset("student","tom","not bad"))
-# print(redis.hset("student","jim"," bad"))
-# print(redis.hdel("student","jim"))
-
-# print(redis.getString("age"))
-# print(redis.setString("address","四川"))
-# print(redis.getString("address"))
-# print(redis.delString("address"))
-# print(redis.getString("address"))
 

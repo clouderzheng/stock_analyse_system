@@ -30,15 +30,14 @@ scheduler = BackgroundScheduler()
 # scheduler.init_app(app)
 
 # 添加定时任务查询竞价信息 每天 9:25
-scheduler.add_job(snow_ball_service.get_biding_info, 'cron', hour=21,minute=11)
-# scheduler.add_job(snow_ball_service.get_biding_info(), 'interval', seconds=5)
-#
+scheduler.add_job(snow_ball_service.get_biding_info, 'cron', hour=21,minute=26)
+
 # 添加定时任务查询雪球仓位组合 23:40
 scheduler.add_job(snow_ball_service.get_stock_position_combination, 'cron', hour=23,minute=40)
 """定时任务更新最新股票信息 每天下午4点"""
-scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=14,minute=57)
+scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=15,minute=10)
 """定时任务爬取所有股票信息"""
-scheduler.add_job(query_all_stock_service.query_stock, 'cron', hour=12,minute=2)
+scheduler.add_job(query_all_stock_service.query_stock, 'cron', hour=15,minute=20)
 
 manager = Manager(app)
 scheduler.start()

@@ -12,7 +12,9 @@ def get_stock_info(key_word = None):
         cursor.execute(sql,(key_word,key_word,key_word))
     else:
         cursor.execute(sql)
-    return cursor.fetchall()
+    result = cursor.fetchall()
+    con.close()
+    return result
 """获取数据库股票总数"""
 def get_stock_count():
     sql = "select count(1) count from trade_stock"
@@ -20,7 +22,9 @@ def get_stock_count():
     cursor = con.cursor()
     """判断是否条件查询"""
     cursor.execute(sql)
-    return cursor.fetchone()['count']
+    result = cursor.fetchone()['count']
+    con.close()
+    return result
 
 """删除股票信息表"""
 def delete_stock():
@@ -30,7 +34,7 @@ def delete_stock():
     """判断是否条件查询"""
     cursor.execute(sql)
     con.commit()
-
+    con.close()
 def add_stock_list(stock_list):
     sql = "insert ignore into trade_stock(stock_name,area_stock_code,code_short,stock_letters) values(%s,%s,%s,%s) "
     con = sql_pool().get_connection()
@@ -38,3 +42,4 @@ def add_stock_list(stock_list):
     """判断是否条件查询"""
     cursor.executemany(sql,stock_list)
     con.commit()
+    con.close()

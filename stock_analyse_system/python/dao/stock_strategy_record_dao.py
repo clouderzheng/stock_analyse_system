@@ -1,7 +1,6 @@
 from python.mysql import mysql_pool
 from python.redis import redis_pool,redis_key_constants
 from python.util import date_time_util
-
 """策略跟踪dao层"""
 
 class stock_strategy_record:
@@ -20,7 +19,7 @@ class stock_strategy_record:
         record.append(data[4])
         record.append(data[5])
         record.append(data[7])
-        sql = "insert into trade_strategy_track_record (area_stock_code,stock_name,`current_date`,open_price,high_price,low_price,close_price,close_rate) \
+        sql = "insert ignore into trade_strategy_track_record (area_stock_code,stock_name,`current_date`,open_price,high_price,low_price,close_price,close_rate) \
                value (%s,%s,%s,%s,%s,%s,%s,%s) "
         self.mysqlService.insert(sql,record)
 

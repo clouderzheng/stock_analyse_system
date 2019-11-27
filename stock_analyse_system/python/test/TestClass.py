@@ -1,5 +1,7 @@
 from python.service import snow_ball_service,strategy_analyse_service
 from python.mysql import  mysql_pool
+from python.redis import redis_pool,redis_key_constants
+import time
 from python.util import date_time_util
 import datetime
 from python.dao import stock_strategy_dao
@@ -19,7 +21,9 @@ from python.dao import stock_strategy_dao
 
 """测试记录插入"""
 # stock_info = ["光大银行","SH601818",4.09,3.81,"5"]
-# snow_ball_service.save_strategy_stock_info(stock_info)
+# sql = "insert into trade_strategy_record(stock_code,create_date,strategy_category) values (%s,%s,%s) ON DUPLICATE KEY UPDATE  strategy_category = CONCAT(strategy_category,'5')"
+# result = mysql_pool.sql_pool().insert(sql,('SZ10200727','2019-11-27','5'))
+# print(result)
 
 """sql测试"""
 # pool = mysql_pool.sql_pool()
@@ -44,5 +48,12 @@ from python.dao import stock_strategy_dao
 # print(data)
 
 """测试获取策略选股信息"""
-stock = strategy_analyse_service.strategy_analyse().get_strategy_stock(1, 1)
-print(stock[0])
+# stock = strategy_analyse_service.strategy_analyse().get_strategy_stock(1, 1)
+# print(stock[0])
+
+"""测试redis过期时间"""
+# pool = redis_pool.RedisPool()
+# pool.setStringExpire("name","night",redis_key_constants.strategy_lock_time)
+# print(pool.getString("name"))
+# time.sleep(6)
+# print(pool.getString("name"))

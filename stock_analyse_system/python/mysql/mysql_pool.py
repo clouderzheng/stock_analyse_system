@@ -23,7 +23,9 @@ class sql_pool():
         cursor = con.cursor()
         cursor.execute(sql, tuple(param))
         cursor.connection.commit()
+        result = cursor.fetchone()
         con.close()
+        return result
 
     """单个查询"""
     def selectOne(self,sql,param = None):
@@ -33,7 +35,9 @@ class sql_pool():
           cursor.execute(sql)
         else:
           cursor.execute(sql, param)
-        return cursor.fetchone()
+        result = cursor.fetchone()
+        con.close()
+        return result
 
     """多个查询"""
     def selectMany(self,sql,param = None):
@@ -44,4 +48,6 @@ class sql_pool():
             cursor.execute(sql)
         else:
             cursor.execute(sql, param)
-        return cursor.fetchall()
+        result = cursor.fetchall()
+        con.close()
+        return result

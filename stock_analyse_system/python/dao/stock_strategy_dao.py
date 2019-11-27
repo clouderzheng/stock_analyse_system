@@ -7,6 +7,7 @@ class stock_strategy:
     def __init__(self):
         self.mysqlService = mysql_pool.sql_pool()
         self.redis = redis_pool.RedisPool()
+        self.stock_strategy_record_dao =  stock_strategy_record_dao.stock_strategy_record()
 
     """保存策略选择的股票信息到策略选择表"""
     def save_strategy_choose(self,data,stock_code,strategy_id):
@@ -24,11 +25,11 @@ class stock_strategy:
 
         self.mysqlService.insert(sql,stock_info )
         """保存数据到策略跟踪表"""
-        stock_strategy_record_dao.stock_strategy_record().save_stock_strategy_record(stock_code,data)
+        self.stock_strategy_record_dao.save_stock_strategy_record(stock_code,data)
 
     """查询在指定日期内需要跟踪的股票"""
     def get_stock_track(self, param):
-        sql = "SELECT * from trade_strategy_record  GROUP BY stock_code WHERE create_date > %s and  create_date < %s GROUP BY stock_code"
+        sql = "SELECT * from trade_strategy_record  WHERE create_date > %s and  create_date < %s GROUP BY stock_code"
         return self.mysqlService.selectMany(sql, param)
     """持久化策略数据
     这里优化下 逻辑 

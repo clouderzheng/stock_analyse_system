@@ -86,7 +86,6 @@ def get_biding_info(count = 30,max_gain = 4,min_gain = 2):
 def get_stock_last_info():
 
     logging.info("开始同步最新股票信息")
-    # html = requests.get(crawl_html_url.snow_ball_stock_all_info.format(2))
     session = requests.session()
     session.get(crawl_html_url.snow_ball_main_url, headers=headers)
     html = session.get(crawl_html_url.snow_ball_stock_all_info.format(2), headers=headers)
@@ -99,7 +98,9 @@ def get_stock_last_info():
     if(local_count != last_count):
         # 删除原信息
         # stock_service.delete_stock()
-        html = session.get(crawl_html_url.snow_ball_stock_all_info.format(last_count - local_count), headers=headers)
+        new_count = last_count - local_count
+        logging.info("-------------有"+str(new_count)+"支新股上市 开始更新--------------")
+        html = session.get(crawl_html_url.snow_ball_stock_all_info.format(new_count), headers=headers)
         data_list = json.loads(html.text)['data']['list']
         stock_list = []
 

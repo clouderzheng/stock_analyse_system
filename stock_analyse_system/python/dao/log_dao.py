@@ -9,5 +9,5 @@ class log_record():
     """添加日志"""
     def add_log(self,param):
         sql = " insert into trade_log (log_type,error_data,remark) values(%s,%s,%s)"
-        logging.error(param[3])
+        logging.error(param[2])
         self.mysqlService.insert(sql,tuple(param))

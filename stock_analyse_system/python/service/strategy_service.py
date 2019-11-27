@@ -114,6 +114,6 @@ def get_average_bond(data):
         return
 
     """保存信息到策略记录表"""
-    stock_strategy_dao.stock_strategy().save_strategy_choose(current_data, data['data']['symbol'], 4)
+    stock_strategy_dao.stock_strategy().save_strategy_choose(current_data, data['data']['symbol'], 5)
 
 

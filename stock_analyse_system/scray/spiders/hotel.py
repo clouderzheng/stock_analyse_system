@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from python.service import stock_service,strategy_service,crawl_html_url
+from python.service import stock_service,strategy_service,crawl_html_url,strategy_track_service
+
 import json
 from python.util import date_time_util
 from scrapy.http import Request
 import traceback
 from python.redis import redis_pool,redis_key_constants
-
+import logging
 class HotelSpider(scrapy.Spider):
     header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0'}  # 设置浏览器用户代理
     name = 'hotel'
@@ -14,11 +15,20 @@ class HotelSpider(scrapy.Spider):
     # start_urls  = []
 
     def __init__(self):
+        # 获取所有需要爬取股票信息
         self.stocks = stock_service.get_stock_info()
-        self.index = -1
+        # 爬取股票页面链接地址模板
         self.template = crawl_html_url.snow_ball_single_stock_info_url
+        # 爬取时间戳
         self.timestamp = date_time_util.get_timestamp_mill_second()
         self.redis = redis_pool.RedisPool()
+        self.strategy_track_service = strategy_track_service.strategy_track()
+        # 获取策略锁
+        self.strategy_lock = self.redis.getString(redis_key_constants.strategy_lock)
+        # 锁不存在 重新加上锁
+        if self.strategy_lock == None:
+            self.redis.setStringExpire(redis_key_constants.strategy_lock,"lock",redis_key_constants.strategy_lock_time)
+
     #     # self.start_urls = [crawl_html_url.snow_ball_main_url,'https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SZ300272&begin=1571063050000&period=day&type=before&count=-60&indicator=kline','https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SZ300273&begin=1571063050000&period=day&type=before&count=-60&indicator=kline']
     #     self.start_urls = [crawl_html_url.snow_ball_main_url,'https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SZ300272&begin=1571062931000&period=day&type=before&count=-60&indicator=kline']        #     self.start_urls.append(crawl_html_url.snow_ball_single_stock_info_url.format(stock['area_stock_code'],date_time_util.get_timestamp_mill_second(),-60))
     #     print(self.start_urls)
@@ -30,9 +40,8 @@ class HotelSpider(scrapy.Spider):
 
     # start_urls  = url
     def parse(self, response):
-        self.index += 1
         for stock in self.stocks:
-           yield Request(self.template.format(stock['area_stock_code'],self.timestamp,-60),callback=self.strategy_parse,headers=self.header,meta={'cookiejar':True})
+            yield Request(self.template.format(stock['area_stock_code'],self.timestamp,-60),callback=self.strategy_parse,headers=self.header,meta={'cookiejar':True})
 
         pass
 
@@ -46,10 +55,17 @@ class HotelSpider(scrapy.Spider):
         try:
             """"这里缓存在当天数据在redis"""
             self.redis.hset(redis_key_constants.current_day_stock_map,data['data']['symbol'],str(data["data"]["item"][-1]))
-            # self.redis.setString(data['data']['symbol'],data)
+            """策略分类 有些策略不需要每天跑"""
             strategy_service.call_back_support_stock(data)
             strategy_service.get_up_wave(data)
             strategy_service.get_average_bond(data)
         except Exception as e:
             traceback.print_exc()
         pass
+
+    def close(self,spider, reason):
+        logging.info("爬取关闭，关闭爬虫")
+        self.strategy_track_service.get_track_stock()
+        closed = getattr(spider, 'closed', None)
+        if callable(closed):
+            return closed(reason)
