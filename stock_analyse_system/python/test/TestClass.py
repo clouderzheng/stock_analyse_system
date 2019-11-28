@@ -57,3 +57,6 @@ from python.dao import stock_strategy_dao
 # print(pool.getString("name"))
 # time.sleep(6)
 # print(pool.getString("name"))
+
+# import platform
+# print(platform.system().lower())
