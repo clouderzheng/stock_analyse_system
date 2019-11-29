@@ -1,7 +1,7 @@
 from python.util import  calculate_util,complete_stock_code
 from python.dao import stock_strategy_dao
 import requests
-import crawl_html_url
+from python.service import crawl_html_url
 import json
 
 """回调支撑方法
