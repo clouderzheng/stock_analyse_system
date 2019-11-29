@@ -1,5 +1,8 @@
-from python.util import  calculate_util
+from python.util import  calculate_util,complete_stock_code
 from python.dao import stock_strategy_dao
+import requests
+import crawl_html_url
+import json
 
 """回调支撑方法
 原理：股票到达高点之后开始回调 落到前一个高点会获得支撑
@@ -116,4 +119,12 @@ def get_average_bond(data):
     """保存信息到策略记录表"""
     stock_strategy_dao.stock_strategy().save_strategy_choose(current_data, data['data']['symbol'], 5)
 
-
+"""根据主力资金净流入选股"""
+def afternoon_bidding_choose():
+    """根据主力资金净流入 爬取净流入最大的10条数据"""
+    html_data = requests.get(crawl_html_url.east_money_main_funds.format(10))
+    data = json.loads(html_data.text)["data"]["diff"]
+    for stock in data:
+        stock_code = complete_stock_code.complete_stock_code(stock["f12"])
+        stock_info = [stock["f14"],stock_code, stock["2"], stock["f3"], 8]
+        stock_strategy_dao.stock_strategy().save_other_strategy_choose(stock_info)

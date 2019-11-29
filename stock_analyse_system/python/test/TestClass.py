@@ -1,10 +1,14 @@
-from python.service import snow_ball_service,strategy_analyse_service
+from python.service import snow_ball_service,strategy_analyse_service,strategy_service
 from python.mysql import  mysql_pool
 from python.redis import redis_pool,redis_key_constants
 import time
-from python.util import date_time_util
+from python.util import date_time_util,complete_stock_code
 import datetime
 from python.dao import stock_strategy_dao
+
+
+# print(complete_stock_code.complete_stock_code("700233"))
+
 """测试爬取雪球数据"""
 # import requests
 # from python.service import crawl_html_url
@@ -60,3 +64,7 @@ from python.dao import stock_strategy_dao
 
 # import platform
 # print(platform.system().lower())
+
+"""测试获取东方财富资金主流入"""
+# strategy_service.afternoon_bidding_choose()
+

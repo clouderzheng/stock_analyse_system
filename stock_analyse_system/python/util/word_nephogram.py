@@ -20,7 +20,7 @@ def generate_word_nephogram(comment_txt_name):
     wc=WordCloud(
         background_color='white',
         max_words=500,
-        font_path= r'simsun.ttc', # 设置字体格式  mac专用
+        font_path= path + '/static/resources/simsun.ttc', # 设置字体格式  mac专用
         mask=imgMask,  #设置背景图片
         random_state=40 #生成多少种配色方案
     ).generate(jbText)
