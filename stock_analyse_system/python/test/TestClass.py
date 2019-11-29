@@ -56,7 +56,13 @@ from python.dao import stock_strategy_dao
 # print(stock[0])
 
 """测试redis过期时间"""
-# pool = redis_pool.RedisPool()
+pool = redis_pool.RedisPool()
+student = {}
+student["name"] = "night"
+student["age"] = 25
+student["address"] = "四川成都"
+pool.setMap("student",student)
+print(pool.getMap("student"))
 # pool.setStringExpire("name","night",redis_key_constants.strategy_lock_time)
 # print(pool.getString("name"))
 # time.sleep(6)

@@ -56,8 +56,9 @@ class HotelSpider(scrapy.Spider):
             """"这里缓存在当天数据在redis"""
             self.redis.hset(redis_key_constants.current_day_stock_map,data['data']['symbol'],str(data["data"]["item"][-1]))
             """策略分类 有些策略不需要每天跑"""
-            strategy_service.call_back_support_stock(data)
-            strategy_service.get_up_wave(data)
+            if self.strategy_lock != None:
+                strategy_service.call_back_support_stock(data)
+                strategy_service.get_up_wave(data)
             strategy_service.get_average_bond(data)
         except Exception as e:
             traceback.print_exc()

@@ -34,4 +34,12 @@ class RedisPool():
     def hget(self,name,key):
         return self.service.hget(name,key)
 
+    """保存map"""
+    def setMap(self,key,map):
+        return self.service.hmset(key,map)
+
+    """获取map"""
+    def getMap(self,key):
+        return self.service.hgetall(key)
+
 
