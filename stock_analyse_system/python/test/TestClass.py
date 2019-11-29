@@ -66,5 +66,5 @@ from python.dao import stock_strategy_dao
 # print(platform.system().lower())
 
 """测试获取东方财富资金主流入"""
-# strategy_service.afternoon_bidding_choose()
+strategy_service.afternoon_bidding_choose()
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<!--    <meta http-equiv="refresh" content="10">-->
+    <!--    <meta http-equiv="refresh" content="10">-->
     <META HTTP-EQUIV="pragma" CONTENT="no-cache">
     <link rel="shortcut icon" href="/static/image/favicon-night.ico"/>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
@@ -32,7 +32,8 @@
                 <div class="panel-group" id="panel-680598">
                     <div class="panel panel-default">
                         <div class="panel-heading" onclick="refresh()">
-                            <label class="panel-title" data-toggle="collapse" data-parent="#panel-680598">首页(HOME)</label>
+                            <label class="panel-title" data-toggle="collapse"
+                                   data-parent="#panel-680598">首页(HOME)</label>
                         </div>
 
                     </div>
@@ -51,23 +52,26 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-680598"
-                               href="#screen_stock" >策略选股(choose)</a>
+                               href="#screen_stock">策略选股(choose)</a>
                         </div>
                         <div id="screen_stock" class="panel-collapse collapse">
                             <div class="panel-body" onclick="change_content('snowball_combination_page')">
-                                <a >雪球仓位组合 </a>
+                                <a>雪球仓位组合 </a>
                             </div>
                             <div class="panel-body" onclick="change_content('morning_bidding_choose_page')">
-                                <a >早盘竞价选股 </a>
+                                <a>早盘竞价选股 </a>
                             </div>
                             <div class="panel-body" onclick="change_strategy('strategy_template',3)">
-                                <a >回调支撑选股 </a>
+                                <a>回调支撑选股 </a>
                             </div>
-                             <div class="panel-body" onclick="change_strategy('strategy_template',4)">
-                                <a >主升浪形态 </a>
+                            <div class="panel-body" onclick="change_strategy('strategy_template',4)">
+                                <a>主升浪形态 </a>
                             </div>
-                              <div class="panel-body" onclick="change_strategy('strategy_template',5)">
-                                <a >均线粘合 </a>
+                            <div class="panel-body" onclick="change_strategy('strategy_template',5)">
+                                <a>均线粘合 </a>
+                            </div>
+                            <div class="panel-body" onclick="change_strategy('strategy_template',8)">
+                                <a>尾盘竞价 </a>
                             </div>
                         </div>
                     </div>
@@ -79,7 +83,7 @@
                         </div>
                         <div id="stock_comment" class="panel-collapse collapse">
                             <div class="panel-body" onclick="change_content('sina_market_comment')">
-                                <a >新浪评论 </a>
+                                <a>新浪评论 </a>
                             </div>
                         </div>
                     </div>
@@ -99,19 +103,19 @@
     $(document).ready(function () {
 
 
-     var token = sessionStorage.getItem("token");
+        var token = sessionStorage.getItem("token");
 
-     if(token == undefined){
-         window.location.href = "/auth/login"
-     }
-        var url = "/auth/index_info?token="+token;
+        if (token == undefined) {
+            window.location.href = "/auth/login"
+        }
+        var url = "/auth/index_info?token=" + token;
         {#$("#content").attr("src",url);#}
     })
 
     function refresh() {
         window.location.reload();
     }
-    
+
 
 </script>
 </body>

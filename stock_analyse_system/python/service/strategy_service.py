@@ -126,5 +126,5 @@ def afternoon_bidding_choose():
     data = json.loads(html_data.text)["data"]["diff"]
     for stock in data:
         stock_code = complete_stock_code.complete_stock_code(stock["f12"])
-        stock_info = [stock["f14"],stock_code, stock["2"], stock["f3"], 8]
+        stock_info = [stock["f14"],stock_code, stock["f2"], stock["f3"], 8]
         stock_strategy_dao.stock_strategy().save_other_strategy_choose(stock_info)
