@@ -56,13 +56,13 @@ from python.dao import stock_strategy_dao
 # print(stock[0])
 
 """测试redis过期时间"""
-pool = redis_pool.RedisPool()
-student = {}
-student["name"] = "night"
-student["age"] = 25
-student["address"] = "四川成都"
-pool.setMap("student",student)
-print(pool.getMap("student"))
+# pool = redis_pool.RedisPool()
+# student = {}
+# student["name"] = "night"
+# student["age"] = 25
+# student["address"] = "四川成都"
+# pool.setMap("student",student)
+# print(pool.getMap("student"))
 # pool.setStringExpire("name","night",redis_key_constants.strategy_lock_time)
 # print(pool.getString("name"))
 # time.sleep(6)
@@ -72,5 +72,5 @@ print(pool.getMap("student"))
 # print(platform.system().lower())
 
 """测试获取东方财富资金主流入"""
-strategy_service.afternoon_bidding_choose()
+# strategy_service.afternoon_bidding_choose()
 
