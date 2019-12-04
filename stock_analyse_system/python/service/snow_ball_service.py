@@ -13,7 +13,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.3
                          'Chrome/51.0.2704.63 Safari/537.36'}
 
 """获取雪球仓位组合"""
-def get_stock_position_combination(begin_time = date_time_util.get_date_time(-1),end_time = date_time_util.get_date_time(0),page = 1,total = 50):
+def get_stock_position_combination(begin_time = date_time_util.get_date_time(-1),end_time = date_time_util.get_date_time(0),page = 1,total = 100):
 
     begin_time_timestamp = int(time.mktime(time.strptime(begin_time , "%Y-%m-%d %H:%M:%S"))) * 1000
     end_time_timestamp = int(time.mktime(time.strptime(end_time , "%Y-%m-%d %H:%M:%S"))) * 1000
