@@ -3,7 +3,7 @@ from python.system import auth,home_index,snow_ball,sina_comment,spider_signal
 
 from flask_script import Manager
 from apscheduler.schedulers.background import BackgroundScheduler
-from python.service import snow_ball_service,query_all_stock_service
+from python.service import snow_ball_service,query_all_stock_service,strategy_service
 from python.util import logger_util,personal_encoder
 from python.controller import strategy_analyse_controller
 
@@ -32,7 +32,7 @@ scheduler = BackgroundScheduler()
 # 添加定时任务查询竞价信息 每天
 scheduler.add_job(snow_ball_service.get_biding_info, 'cron', hour=9,minute=26)
 # 添加定时任务查询尾盘主力资金流入
-scheduler.add_job(snow_ball_service.get_biding_info, 'cron', hour=15,minute=5)
+scheduler.add_job(strategy_service.afternoon_bidding_choose, 'cron', hour=15,minute=5)
 """定时任务更新最新股票信息 """
 scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=15,minute=10)
 """定时任务爬取所有股票信息"""
