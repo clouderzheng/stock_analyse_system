@@ -6,6 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from python.service import snow_ball_service,query_all_stock_service,strategy_service
 from python.util import logger_util,personal_encoder
 from python.controller import strategy_analyse_controller
+import fcntl,atexit
 
 app = Flask(__name__)
 app.register_blueprint(auth.blueprint)
@@ -29,18 +30,28 @@ scheduler = BackgroundScheduler()
 # scheduler = APScheduler()
 # scheduler.init_app(app)
 
-# 添加定时任务查询竞价信息 每天
-scheduler.add_job(snow_ball_service.get_biding_info, 'cron', hour=9,minute=26)
-# 添加定时任务查询尾盘主力资金流入
-scheduler.add_job(strategy_service.afternoon_bidding_choose, 'cron', hour=15,minute=5)
-"""定时任务更新最新股票信息 """
-scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=15,minute=10)
-"""定时任务爬取所有股票信息"""
-scheduler.add_job(query_all_stock_service.query_stock, 'cron', hour=15,minute=20)
-# 添加定时任务查询雪球仓位组合 23:40
-scheduler.add_job(snow_ball_service.get_stock_position_combination, 'cron', hour=23,minute=40)
+lock = open("scheduler_lock","wb")
+
+try:
+    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    # 添加定时任务查询竞价信息 每天
+    scheduler.add_job(snow_ball_service.get_biding_info, 'cron', hour=9,minute=26)
+    # 添加定时任务查询尾盘主力资金流入
+    scheduler.add_job(strategy_service.afternoon_bidding_choose, 'cron', hour=15,minute=5)
+    """定时任务更新最新股票信息 """
+    scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=15,minute=10)
+    """定时任务爬取所有股票信息"""
+    scheduler.add_job(query_all_stock_service.query_stock, 'cron', hour=15,minute=20)
+    # 添加定时任务查询雪球仓位组合 23:40
+    scheduler.add_job(snow_ball_service.get_stock_position_combination, 'cron', hour=23,minute=40)
+    scheduler.start()
+except:
+    pass
+def unlock():
+    fcntl.flock(lock, fcntl.LOCK_UN)
+    lock.close()
+atexit.register(unlock)
 manager = Manager(app)
-scheduler.start()
 if __name__ == '__main__':
 
     app.run(host = '0.0.0.0' ,port = 9112)

@@ -33,12 +33,12 @@ def get_bidding_info():
     res= {"code":"0000","result":result}
     return res
 
-"""获取回调支撑位股票"""
-@blueprint.route('/get_call_back_support_stock', methods=['POST'])
-def get_call_back_support_stock():
-    call_back_day = int(request.form.get("call_back_day"))
-    exclude_day = int(request.form.get("exclude_day"))
-    float_per = float(request.form.get("float_per"))
-    result = snow_ball_service.get_call_back_support_stock(call_back_day = call_back_day,exclude_day=exclude_day,float_per=float_per)
-    res = {"code":"0000","result":result}
-    return res
+# """获取回调支撑位股票"""
+# @blueprint.route('/get_call_back_support_stock', methods=['POST'])
+# def get_call_back_support_stock():
+#     call_back_day = int(request.form.get("call_back_day"))
+#     exclude_day = int(request.form.get("exclude_day"))
+#     float_per = float(request.form.get("float_per"))
+#     result = snow_ball_service.get_call_back_support_stock(call_back_day = call_back_day,exclude_day=exclude_day,float_per=float_per)
+#     res = {"code":"0000","result":result}
+#     return res
