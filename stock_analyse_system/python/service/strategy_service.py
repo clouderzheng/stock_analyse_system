@@ -62,9 +62,9 @@ def call_back_support_stock(data):
 """
 def get_up_wave(data):
     """回溯天数"""
-    call_back_day = 15
+    call_back_day = 10
     """容错天数"""
-    fault_day = 3
+    fault_day = 2
 
     """计算5日线回溯天数"""
     five_average_day = call_back_day + 5
