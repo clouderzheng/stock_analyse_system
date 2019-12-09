@@ -41,9 +41,9 @@ else:
     # 添加定时任务查询竞价信息 每天
     scheduler.add_job(snow_ball_service.get_biding_info, 'cron', hour=9,minute=27)
     """定时任务更新最新股票信息 """
-    scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=15,minute=5)
+    scheduler.add_job(snow_ball_service.get_stock_last_info, 'cron', hour=15,minute=8)
     # 添加定时任务查询尾盘主力资金流入
-    scheduler.add_job(strategy_service.afternoon_bidding_choose, 'cron', hour=15,minute=10)
+    # scheduler.add_job(strategy_service.afternoon_bidding_choose, 'cron', hour=15,minute=10)
     """定时任务爬取所有股票信息"""
     scheduler.add_job(query_all_stock_service.query_stock, 'cron', hour=15,minute=20)
     # 添加定时任务查询雪球仓位组合 23:40

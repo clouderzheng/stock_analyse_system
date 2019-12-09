@@ -56,7 +56,9 @@ from python.dao import stock_strategy_dao
 # print(stock[0])
 
 """测试redis过期时间"""
-# pool = redis_pool.RedisPool()
+pool = redis_pool.RedisPool()
+lock = pool.getString(redis_key_constants.strategy_lock)
+print(lock == None)
 # student = {}
 # student["name"] = "night"
 # student["age"] = 25
