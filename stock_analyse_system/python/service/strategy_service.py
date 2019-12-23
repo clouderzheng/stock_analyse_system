@@ -74,12 +74,12 @@ def get_up_wave(data):
     items = item_[-five_average_day:]
     for index in range(call_back_day):
         """获取当天收盘价 多了5天计算平均值 所有位移5位 """
-        current_day_close_price = items[index + 5][crawl_html_url.close_price_index]
+        current_day_close_price = float(items[index + 5].split(",")[crawl_html_url.close_price_index])
         """获取计算5日价的 天数"""
         calculate_five_day = items[index + 1:index + 6]
         count = 0
         for every_day in calculate_five_day:
-            count += every_day[crawl_html_url.close_price_index]
+            count += float(every_day.split(",")[crawl_html_url.close_price_index])
 
         five_average_value = round(count / 5,2)
         """判断收盘价是否低于5日线  低于5日线 容错日减一"""
@@ -88,7 +88,12 @@ def get_up_wave(data):
     """最终容错日大于-1  证明该股票符合策略"""
     if( fault_day > -1):
         current_day_data = items[-1]
-        stock_strategy_dao.stock_strategy().save_strategy_choose(current_day_data, data['data']['symbol'], 4)
+        code = str(data['code'])
+        if code.startswith("0") | code.startswith("3"):
+            code = "SZ" + code
+        else:
+            code = "SH" + code
+        stock_strategy_dao.stock_strategy().save_strategy_choose(current_day_data, code, 4)
 """
 均线粘合策略  5日线  10日线 20日线 挤在一起获得支撑
 参数 ： 相差费率  均线粘合之间的空隙 
@@ -122,7 +127,7 @@ def get_average_bond(data):
 """根据主力资金净流入选股"""
 def afternoon_bidding_choose():
     """根据主力资金净流入 爬取净流入最大的10条数据"""
-    html_data = requests.get(crawl_html_url.east_money_main_funds.format(10))
+    html_data = requests.get(crawl_html_url.east_money_main_funds.format(20))
     data = json.loads(html_data.text)["data"]["diff"]
     for stock in data:
         stock_code = complete_stock_code.complete_stock_code(stock["f12"])

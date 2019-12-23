@@ -1,6 +1,8 @@
 from python.mysql import mysql_pool
 from python.redis import redis_pool,redis_key_constants
 from python.util import date_time_util
+from python.service import crawl_html_url
+
 """策略跟踪dao层"""
 
 class stock_strategy_record:
@@ -11,14 +13,15 @@ class stock_strategy_record:
     """插入跟踪记录"""
     def save_stock_strategy_record(self,stock_code,data):
         record = []
+        data = data.split(",")
         record.append(stock_code)
         record.append(self.redis.hget(redis_key_constants.stock_name_code_mapping,stock_code))
         record.append(date_time_util.get_date(0))
-        record.append(data[2])
-        record.append(data[3])
-        record.append(data[4])
-        record.append(data[5])
-        record.append(data[7])
+        record.append(data[crawl_html_url.open_price_index])
+        record.append(data[crawl_html_url.low_price_index])
+        record.append(data[crawl_html_url.high_price_index])
+        record.append(data[crawl_html_url.close_price_index])
+        record.append(0)
         sql = "insert ignore into trade_strategy_track_record (area_stock_code,stock_name,`current_date`,open_price,high_price,low_price,close_price,close_rate) \
                value (%s,%s,%s,%s,%s,%s,%s,%s) "
         self.mysqlService.insert(sql,record)

@@ -2,6 +2,8 @@ from python.mysql import mysql_pool
 from python.redis import redis_pool,redis_key_constants
 from python.util import date_time_util
 from python.dao import stock_strategy_record_dao
+from python.service import crawl_html_url
+
 """策略选股记录"""
 class stock_strategy:
     def __init__(self):
@@ -15,8 +17,8 @@ class stock_strategy:
         stock_info = []
         stock_info.append(self.redis.hget(redis_key_constants.stock_name_code_mapping,stock_code))
         stock_info.append(stock_code)
-        stock_info.append(data[5])
-        stock_info.append(data[7])
+        stock_info.append(data.split(",")[crawl_html_url.close_price_index])
+        stock_info.append(0)
         stock_info.append("," + strategy_id)
         stock_info.append(date_time_util.get_date(0))
 
