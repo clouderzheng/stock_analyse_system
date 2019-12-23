@@ -70,16 +70,16 @@ def get_up_wave(data):
     five_average_day = call_back_day + 5
 
     """获取最近5日数据"""
-    item_ = data["data"]["item"]
+    item_ = data["data"]
     items = item_[-five_average_day:]
     for index in range(call_back_day):
         """获取当天收盘价 多了5天计算平均值 所有位移5位 """
-        current_day_close_price = items[index + 5][5]
+        current_day_close_price = items[index + 5][crawl_html_url.close_price_index]
         """获取计算5日价的 天数"""
         calculate_five_day = items[index + 1:index + 6]
         count = 0
         for every_day in calculate_five_day:
-            count += every_day[5]
+            count += every_day[crawl_html_url.close_price_index]
 
         five_average_value = round(count / 5,2)
         """判断收盘价是否低于5日线  低于5日线 容错日减一"""

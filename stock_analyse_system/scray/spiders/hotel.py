@@ -18,7 +18,9 @@ class HotelSpider(scrapy.Spider):
         # 获取所有需要爬取股票信息
         self.stocks = stock_service.get_stock_info()
         # 爬取股票页面链接地址模板
-        self.template = crawl_html_url.snow_ball_single_stock_info_url
+        # self.template = crawl_html_url.snow_ball_single_stock_info_url
+        self.template = crawl_html_url.east_money_single_stock
+
         # 爬取时间戳
         self.timestamp = date_time_util.get_timestamp_mill_second()
         self.redis = redis_pool.RedisPool()
@@ -41,24 +43,30 @@ class HotelSpider(scrapy.Spider):
     # start_urls  = url
     def parse(self, response):
         for stock in self.stocks:
-            yield Request(self.template.format(stock['area_stock_code'],self.timestamp,-60),callback=self.strategy_parse,headers=self.header,meta={'cookiejar':True})
+            code = stock['code_short']
+            if str(code).startswith("3") | str(code).startswith("0"):
+                code = code+"2"
+            else:
+                code = code +"1"
+            yield Request(self.template.format(code,self.timestamp),callback=self.strategy_parse,headers=self.header,meta={'cookiejar':True})
 
         pass
 
     """回调策略"""
     def strategy_parse(self,response):
-
-        data = json.loads(response.text)
-        if (len(data["data"]["item"]) < 60):
+        jsonp = str(response.text)
+        jsonp = jsonp[19:-1]
+        data = json.loads(jsonp)
+        if (len(data["data"]) < 60):
             return
 
         try:
             """"这里缓存在当天数据在redis"""
-            self.redis.hset(redis_key_constants.current_day_stock_map,data['data']['symbol'],str(data["data"]["item"][-1]))
+            self.redis.hset(redis_key_constants.current_day_stock_map,data['code'],str(data["data"][-1]))
             """策略分类 有些策略不需要每天跑"""
-            if self.strategy_lock == None:
-                strategy_service.call_back_support_stock(data)
-                strategy_service.get_up_wave(data)
+            # if self.strategy_lock == None:
+            # strategy_service.call_back_support_stock(data)
+            strategy_service.get_up_wave(data)
             strategy_service.get_average_bond(data)
         except Exception as e:
             traceback.print_exc()
