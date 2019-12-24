@@ -29,3 +29,6 @@ east_money_main_funds = "http://push2.eastmoney.com/api/qt/clist/get?pn=1&pz={}&
 
 # d东方财富单只股票信息
 east_money_single_stock = "http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?token=4f1862fc3b5e77c150a2b985b12db0fd&rtntype=6&id={}&type=k&authorityType=fa&cb=jsonp{}"
+
+# 东方财富每日活跃营业部
+east_money_active_sale_department = "http://data.eastmoney.com/DataCenter_V3/stock2016/ActiveStatistics/pagesize={},page=1,sortRule=-1,sortType=JmMoney,startDate={},endDate={},gpfw=0,js=var%20data_tab_1.html?rt=26286629"

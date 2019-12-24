@@ -88,12 +88,12 @@ def get_up_wave(data):
     """最终容错日大于-1  证明该股票符合策略"""
     if( fault_day > -1):
         current_day_data = items[-1]
-        code = str(data['code'])
-        if code.startswith("0") | code.startswith("3"):
-            code = "SZ" + code
-        else:
-            code = "SH" + code
-        stock_strategy_dao.stock_strategy().save_strategy_choose(current_day_data, code, 4)
+        # code = str(data['code'])
+        # if code.startswith("0") | code.startswith("3"):
+        #     code = "SZ" + code
+        # else:
+        #     code = "SH" + code
+        stock_strategy_dao.stock_strategy().save_strategy_choose(current_day_data, data['code'], 4)
 """
 均线粘合策略  5日线  10日线 20日线 挤在一起获得支撑
 参数 ： 相差费率  均线粘合之间的空隙 
@@ -133,3 +133,23 @@ def afternoon_bidding_choose():
         stock_code = complete_stock_code.complete_stock_code(stock["f12"])
         stock_info = [stock["f14"],stock_code, stock["f2"], stock["f3"], 8]
         stock_strategy_dao.stock_strategy().save_other_strategy_choose(stock_info)
+
+"""年线策略  算出最近一年均线  250 判断 当前价格离年均线是否在指定区间幅度内"""
+def year_average_choose(data):
+    days = 250
+    float_per = 20
+    # 获取天数据
+    item_ = data["data"]
+    # 判断天数据是否低于250 天 低于250 不予处理
+    if len(item_) < days:
+        return
+    # 获取最近250天数据
+    items = item_[-days:]
+    current_day_close_price = float(items[-1].split(",")[crawl_html_url.close_price_index])
+    count = 0
+    for every_day in items:
+        count += float(every_day.split(",")[crawl_html_url.close_price_index])
+    year_average_price = round(count/ days,2)
+    diff_per = abs(round(((year_average_price - current_day_close_price )/ current_day_close_price ) * 100,2) )
+    if (diff_per > 0) & (diff_per < float_per):
+        stock_strategy_dao.stock_strategy().save_strategy_choose(items[-1], data['code'], 9)
