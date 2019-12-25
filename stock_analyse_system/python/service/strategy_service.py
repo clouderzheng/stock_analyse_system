@@ -150,9 +150,6 @@ def year_average_choose(data):
     for every_day in items:
         count += float(every_day.split(",")[crawl_html_url.close_price_index])
     year_average_price = round(count/ days,2)
-    diff_per = round(
-
-
-        ((year_average_price - current_day_close_price )/ current_day_close_price ) * 100,2)
+    diff_per = round(((year_average_price - current_day_close_price )/ current_day_close_price ) * 100,2)
     if (diff_per > 0) & (diff_per < float_per):
         stock_strategy_dao.stock_strategy().save_strategy_choose(items[-1], data['code'], 9)

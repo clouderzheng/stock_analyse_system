@@ -32,3 +32,5 @@ east_money_single_stock = "http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?tok
 
 # 东方财富每日活跃营业部
 east_money_active_sale_department = "http://data.eastmoney.com/DataCenter_V3/stock2016/ActiveStatistics/pagesize={},page=1,sortRule=-1,sortType=JmMoney,startDate={},endDate={},gpfw=0,js=var%20data_tab_1.html?rt=26286629"
+
+east_money_active_sale_department_trade_stock_money ="http://data.eastmoney.com/DataCenter_V3/stock2016/jymx.ashx?pagesize={}&page=1&js=var%20TiDSLqZb&param=&sortRule=-1&sortType=&gpfw=0&code={}&rt=26288060"
