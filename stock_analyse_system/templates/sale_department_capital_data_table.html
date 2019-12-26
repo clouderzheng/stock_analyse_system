@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+* {
+	margin: 0;
+	padding: 0;
+}
+.main {
+	margin: 0 auto;
+	{#padding: 50px 0;#}
+	width: 100%;
+	min-height: 100%;
+}
+table {
+	margin-bottom: 20px;
+	width: 100%;
+	border-collapse: collapse;
+	border: none;
+    font-family: Arial;
+    font-size: 18px;
+    background-color: ivory;
+    border-top: solid black;
+
+}
+table th, table td {
+	border-color: #999;
+    text-align: center;
+}
+thead {
+    color: #2611d4;
+    font-size: 18px;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/static/css/MyPaging.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+ <script src="/static/js/jquery.min.js"></script>
+
+</head>
+<body>
+<div class="main " >
+
+	<table border class="table table-hover">
+		<thead>
+			<tr>
+				<th>股票名称</th>
+				<th>股票代码</th>
+                <th>上榜日期</th>
+				<th>资金买入</th>
+				<th>资金卖出</th>
+				<th>资金净流入</th>
+			</tr>
+		</thead>
+		<tbody class="tbody">
+
+		</tbody>
+	</table>
+
+	<div class="box2"></div>
+</div>
+
+<script src="/static/js/night_echart.js"></script>
+<script src="/static/js/MyPaging.js"></script>
+<script src="/static/js/sale_department_capital.js"></script>
+ </body>
+</html>
