@@ -47,6 +47,6 @@ class money_flow:
         data = self.capital_dao.query_sale_department_capital()
         return data
 
-# a = money_flow()
-# a.get_active_sale_department()
+a = money_flow()
+a.get_active_sale_department()
 
