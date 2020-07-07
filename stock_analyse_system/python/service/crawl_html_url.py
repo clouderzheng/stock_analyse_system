@@ -34,7 +34,10 @@ east_money_single_stock = "http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?tok
 east_money_active_sale_department = "http://data.eastmoney.com/DataCenter_V3/stock2016/ActiveStatistics/pagesize={},page=1,sortRule=-1,sortType=JmMoney,startDate={},endDate={},gpfw=0,js=var%20data_tab_1.html?rt=26286629"
 
 # 东方财富龙虎榜数据
-east_monet_tiger_list = "http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=,startDate={},endDate=2020-01-15,gpfw=0,js=var%20data_tab_1.html?rt=26318202"
+#                        http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=JmMoney,startDate=2020-02-28,endDate=2020-02-28,gpfw=0,js=var%20data_tab_1.html?rt=26381606
+east_monet_tiger_list = "http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=JmMoney,startDate={},endDate={},gpfw=0,js=var%20data_tab_1.html?rt=26318202"
 
+# 东方财富分时交易数据
+east_money_minute_trade_data = "http://push2ex.eastmoney.com/getStockFenShi?pagesize={}&ut=7eea3edcaed734bea9cbfc24409ed989&dpt=wzfscj&cb=jQuery112306475288992012072_1580359086356&pageindex=0&id={}&sort=1&ft=1&code={}&market={}&_={}"
 
 east_money_active_sale_department_trade_stock_money ="http://data.eastmoney.com/DataCenter_V3/stock2016/jymx.ashx?pagesize={}&page=1&js=var%20TiDSLqZb&param=&sortRule=-1&sortType=&gpfw=0&code={}&rt=26288060"

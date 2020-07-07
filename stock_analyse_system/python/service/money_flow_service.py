@@ -4,6 +4,7 @@ from python.dao import capital_dao
 import requests
 import json
 import io
+from python.util import stock_code_pre_util
 
 import sys
 
@@ -59,7 +60,7 @@ class money_flow:
     """获取龙虎榜数据"""
     def get_tiger_list(self):
         today = date_time_util.get_date(0)
-        data = requests.get(crawl_html_url.east_monet_tiger_list.format(today))
+        data = requests.get(crawl_html_url.east_monet_tiger_list.format(today,today))
         data.encoding = "gbk"
         stock_names = json.loads(data.text[15:])["data"]
         for stock in stock_names:
@@ -78,9 +79,40 @@ class money_flow:
             param.append(stock["Dchratio"])
             param.append(stock["Ltsz"])
             param.append(stock["Ctypedes"])
-            param.append(date_time_util.get_date(0))
+            param.append(today)
             self.capital_dao.add_tiger_list(param)
+
+    """获取分时交易数据"""
+    def get_minute_trade_data(self):
+        count = 7000
+        date = date_time_util.get_timestamp_mill_second()
+        stock_code = "000503"
+        result = stock_code_pre_util.get_stock_code_suff(stock_code)
+
+        data = requests.get(crawl_html_url.east_money_minute_trade_data.format(count,result[0],stock_code,result[1],date))
+        data.encoding = "utf-8"
+        data = json.loads(data.text[42:-2])
+
+        buy_price = 0
+        sale_price = 0
+
+        # bs 4是竞价 1 是卖  2 是买
+        data = data["data"]["data"]
+        for minute_data in data:
+            # 计算成交金额 成交量* 成交价格
+
+            totel_price = minute_data["v"] * minute_data["p"]/10
+            if totel_price > 1000000:
+                if minute_data["bs"] == 2 or minute_data["bs"] == 4:
+                    buy_price = buy_price + totel_price
+                elif minute_data["bs"] == 1:
+                    sale_price = sale_price + totel_price
+
+        print(buy_price/10000,sale_price/10000)
+
 
 a = money_flow()
 # a.get_active_sale_department()
-a.get_tiger_list()
+# a.get_tiger_list()
+a.get_minute_trade_data()
+
